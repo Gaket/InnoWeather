@@ -52,4 +52,6 @@ public class WeatherDetailsFragment extends Fragment implements WeatherDetailsVi
     public Context getContext() {
         return null;
     }
+
+
 }
