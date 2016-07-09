@@ -1,15 +1,28 @@
 package ru.innopolis.innoweather.data.entity;
 
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class WeatherEntity {
     private static final String TAG = "WeatherEntity";
 
+    @SerializedName("id")
+    private int cityId;
     private Clouds clouds;
     private Main main;
     private List<Weather> weather;
     private Wind wind;
+
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
 
     public Clouds getClouds() {
         return clouds;
