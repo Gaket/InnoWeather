@@ -6,9 +6,9 @@ import ru.innopolis.innoweather.data.entity.WeatherEntity;
 import rx.Observable;
 
 /**
- * RestApi for retrieving data from the network.
+ * REST API for retrieving data from the network.
  */
-public interface RestAPI {
+public interface RestApi {
 
     /**
      * Retrieves an {@link rx.Observable} which will emit a List of {@link WeatherEntity}.

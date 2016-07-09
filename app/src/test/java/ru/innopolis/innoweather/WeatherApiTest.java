@@ -1,16 +1,17 @@
 package ru.innopolis.innoweather;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ru.innopolis.innoweather.data.entity.Weather;
 import ru.innopolis.innoweather.data.entity.WeatherEntity;
-import ru.innopolis.innoweather.data.net.RestAPI;
-import ru.innopolis.innoweather.data.net.ServiceGenerator;
+import ru.innopolis.innoweather.data.net.RestApi;
+import ru.innopolis.innoweather.data.net.RestApiImpl;
 import rx.Observable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
@@ -21,8 +22,8 @@ public class WeatherApiTest {
 
     @Before
     public void init() {
-        RestAPI service = new ServiceGenerator().createService(RestAPI.class);
-        weatherEntityObservable = service.getCityWeatherByCityId(2172797);
+        RestApi restApi = new RestApiImpl();
+        weatherEntityObservable = restApi.getCityWeatherByCityId(2172797);
         // Try to print weather once for manual testing
     }
 
