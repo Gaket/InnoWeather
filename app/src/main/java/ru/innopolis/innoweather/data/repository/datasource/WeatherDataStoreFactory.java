@@ -1,14 +1,11 @@
 package ru.innopolis.innoweather.data.repository.datasource;
 
-import android.content.ContentResolver;
 import android.content.Context;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.innopolis.innoweather.data.net.RestApi;
 import ru.innopolis.innoweather.data.net.RestApiImpl;
-import ru.innopolis.innoweather.domain.Weather;
 
 @Singleton
 public class WeatherDataStoreFactory {

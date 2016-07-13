@@ -1,6 +1,7 @@
 package ru.innopolis.innoweather.presentation.di.components;
 
 import android.app.Activity;
+
 import dagger.Component;
 import ru.innopolis.innoweather.presentation.di.PerActivity;
 import ru.innopolis.innoweather.presentation.di.modules.ActivityModule;

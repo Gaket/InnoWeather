@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import ru.innopolis.innoweather.presentation.AndroidApplication;
 import ru.innopolis.innoweather.presentation.di.components.ApplicationComponent;

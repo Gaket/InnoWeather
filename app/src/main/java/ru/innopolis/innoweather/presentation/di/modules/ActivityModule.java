@@ -1,8 +1,6 @@
 package ru.innopolis.innoweather.presentation.di.modules;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
-
 
 import dagger.Module;
 import dagger.Provides;

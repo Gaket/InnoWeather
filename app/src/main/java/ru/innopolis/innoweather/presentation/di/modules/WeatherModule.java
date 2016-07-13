@@ -20,7 +20,6 @@ import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
-import ru.innopolis.innoweather.domain.Weather;
 import ru.innopolis.innoweather.domain.executor.PostExecutionThread;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
 import ru.innopolis.innoweather.domain.interactor.GetWeatherDetails;
