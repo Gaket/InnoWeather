@@ -1,10 +1,7 @@
 package ru.innopolis.innoweather.domain;
 
-import com.google.gson.annotations.SerializedName;
-
 public class Weather {
     private static final String TAG = "Weather";
-
 
     private int cityId;
     private double temp;
@@ -12,9 +9,18 @@ public class Weather {
     private double humidity;
     private double tempMin;
     private double tempMax;
+    private String cloudiness;
 
     public Weather(int cityId) {
         this.cityId = cityId;
+    }
+
+    public String getCloudiness() {
+        return cloudiness;
+    }
+
+    public void setCloudiness(String cloudiness) {
+        this.cloudiness = cloudiness;
     }
 
     public int getCityId() {

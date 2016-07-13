@@ -5,6 +5,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import ru.innopolis.innoweather.data.entity.internals.Clouds;
+import ru.innopolis.innoweather.data.entity.internals.Main;
+import ru.innopolis.innoweather.data.entity.internals.Weather;
+import ru.innopolis.innoweather.data.entity.internals.Wind;
+
 public class WeatherEntity {
     private static final String TAG = "WeatherEntity";
 

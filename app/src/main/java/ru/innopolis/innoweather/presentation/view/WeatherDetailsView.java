@@ -4,5 +4,5 @@ import ru.innopolis.innoweather.presentation.model.WeatherModel;
 
 public interface WeatherDetailsView extends LoadDataView {
 
-  void renderWeather(WeatherModel weather);
+  void renderWeatherDetails(WeatherModel weather);
 }

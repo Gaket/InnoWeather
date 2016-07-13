@@ -1,28 +1,32 @@
 package ru.innopolis.innoweather.presentation.presenter;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.innopolis.innoweather.domain.Weather;
 import ru.innopolis.innoweather.domain.interactor.UseCase;
+import ru.innopolis.innoweather.presentation.di.PerActivity;
 import ru.innopolis.innoweather.presentation.mapper.WeatherModelDataMapper;
 import ru.innopolis.innoweather.presentation.model.WeatherModel;
 import ru.innopolis.innoweather.presentation.view.WeatherDetailsView;
 import rx.Subscriber;
 
+@PerActivity
 public class WeatherDetailsPresenter implements Presenter {
+    private static String TAG = "WeatherDetailsPresenter";
 
     private WeatherDetailsView viewDetailsView;
 
-    private final UseCase getWeatherDetailsUseCase;
+    private final UseCase weatherDetailsUseCase;
     private final WeatherModelDataMapper weatherModelDataMapper;
 
     @Inject
-    public WeatherDetailsPresenter(@Named("WeatherDetails") UseCase getWeatherDetailsUseCase,
+    public WeatherDetailsPresenter(@Named("weatherDetails") UseCase weatherDetailsUseCase,
                                    WeatherModelDataMapper weatherModelDataMapper) {
-        this.getWeatherDetailsUseCase = getWeatherDetailsUseCase;
+        this.weatherDetailsUseCase = weatherDetailsUseCase;
         this.weatherModelDataMapper = weatherModelDataMapper;
     }
 
@@ -40,8 +44,8 @@ public class WeatherDetailsPresenter implements Presenter {
 
     @Override
     public void destroy() {
-        this.getWeatherDetailsUseCase.unsubscribe();
-        this.viewDetailsView = null;
+        weatherDetailsUseCase.unsubscribe();
+        viewDetailsView = null;
     }
 
     /**
@@ -55,38 +59,39 @@ public class WeatherDetailsPresenter implements Presenter {
      * Loads Weather details.
      */
     private void loadWeatherDetails() {
-        this.showViewBusy();
-        this.getWeatherDetails();
+        showViewBusy();
+        getWeatherDetails();
     }
 
     private void showViewBusy() {
-        this.viewDetailsView.showBusy();
+        viewDetailsView.showProgress();
     }
 
     private void hideViewBusy() {
-        this.viewDetailsView.hideBusy();
+        viewDetailsView.hideProgress();
     }
 
     private void showWeatherDetailsInView(Weather weather) {
-        final WeatherModel weatherModel = this.weatherModelDataMapper.transform(weather);
-        this.viewDetailsView.renderWeather(weatherModel);
+        final WeatherModel weatherModel = weatherModelDataMapper.transform(weather);
+        this.viewDetailsView.renderWeatherDetails(weatherModel);
     }
 
     private void getWeatherDetails() {
-        this.getWeatherDetailsUseCase.execute(new Subscriber<Weather>() {
+        weatherDetailsUseCase.execute(new Subscriber<Weather>() {
             @Override
             public void onCompleted() {
-                WeatherDetailsPresenter.this.hideViewBusy();
+                hideViewBusy();
             }
 
             @Override
             public void onError(Throwable e) {
-                WeatherDetailsPresenter.this.hideViewBusy();
+                hideViewBusy();
+                Log.e(TAG, "onError: ", e);
             }
 
             @Override
             public void onNext(Weather weather) {
-                WeatherDetailsPresenter.this.showWeatherDetailsInView(weather);
+                showWeatherDetailsInView(weather);
             }
         });
     }

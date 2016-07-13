@@ -1,5 +1,7 @@
 package ru.innopolis.innoweather.data.entity.mapper;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -7,9 +9,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.innopolis.innoweather.data.entity.Main;
-import ru.innopolis.innoweather.domain.Weather;
+import ru.innopolis.innoweather.data.entity.internals.Main;
 import ru.innopolis.innoweather.data.entity.WeatherEntity;
+import ru.innopolis.innoweather.domain.Weather;
 
 /**
  * Class needed to transform data entities into domain models
@@ -22,18 +24,24 @@ public class WeatherEntityDataMapper {
     public WeatherEntityDataMapper() {
     }
 
-    public Weather transform(WeatherEntity WeatherEntity) {
+    public Weather transform(WeatherEntity weatherEntity) {
         Weather weather = null;
-        if (WeatherEntity != null) {
-            weather = new Weather(WeatherEntity.getCityId());
-            Main main = WeatherEntity.getMain();
-            weather.setHumidity(main.getHumidity());
-            weather.setPressure(main.getPressure());
-            weather.setTemp(main.getTemp());
-            weather.setTempMax(main.getTempMax());
-            weather.setTempMin(main.getTempMin());
+        if (weatherEntity != null) {
+            if (weatherEntity.getWind() != null &&
+                    weatherEntity.getClouds() != null &&
+                    weatherEntity.getWeather() != null) {
+                weather = new Weather(weatherEntity.getCityId());
+                Main main = weatherEntity.getMain();
+                weather.setHumidity(main.getHumidity());
+                weather.setPressure(main.getPressure());
+                weather.setTemp(main.getTemp());
+                weather.setTempMax(main.getTempMax());
+                weather.setTempMin(main.getTempMin());
+                weather.setCloudiness(weatherEntity.getWeather().get(0).getDescription());
+            } else {
+                Log.e(TAG, "transform: problem with downloaded weatherEntity");
+            }
         }
-
         return weather;
     }
 

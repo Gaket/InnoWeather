@@ -1,22 +1,15 @@
-package ru.innopolis.innoweather;
+package ru.innopolis.innoweather.data.net;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ru.innopolis.innoweather.data.entity.Weather;
+import ru.innopolis.innoweather.data.entity.internals.Weather;
 import ru.innopolis.innoweather.data.entity.WeatherEntity;
-import ru.innopolis.innoweather.data.net.RestApi;
-import ru.innopolis.innoweather.data.net.RestApiImpl;
 import rx.Observable;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
-/**
- * To work on unit tests, switch the Test Artifact in the Build Variants view.
- */
-public class WeatherApiTest {
+public class RestApiImplTest {
 
     private Observable<WeatherEntity> weatherEntityObservable;
 
@@ -42,8 +35,8 @@ public class WeatherApiTest {
         weatherEntityObservable.subscribe(
                 (weather) -> {
                     // Default value for these values is 0.0
-                    // If all the values are 0.0, then probably we didn't get the real data
                     // There is low probability, that all of these values will be equal zero at the same time
+                    // If all the values are 0.0, then probably we didn't get the real data
                     assertTrue(
                             weather.getMain().getTempMin() != 0.0
                                     || weather.getMain().getTempMax() != 0.0
@@ -53,8 +46,9 @@ public class WeatherApiTest {
         );
     }
 
+
     @Test
-    public void testGetWeatherByCityId() {
+    public void testGetWeatherDescriptionByCityId() {
 
         weatherEntityObservable.subscribe(
                 (weather) -> {

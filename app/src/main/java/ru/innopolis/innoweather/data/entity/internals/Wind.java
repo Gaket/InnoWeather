@@ -1,4 +1,4 @@
-package ru.innopolis.innoweather.data.entity;
+package ru.innopolis.innoweather.data.entity.internals;
 
 
 public class Wind {

@@ -28,6 +28,7 @@ public class WeatherModelDataMapper {
     weatherModel.setTempMin(weather.getTempMin());
     weatherModel.setPressure(weather.getPressure());
     weatherModel.setHumidity(weather.getHumidity());
+    weatherModel.setCloudiness(weather.getCloudiness());
 
     return weatherModel;
   }

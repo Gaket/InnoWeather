@@ -13,15 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.innopolis.innoweather.domain.executor;
+package ru.innopolis.innoweather.presentation;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import ru.innopolis.innoweather.domain.executor.PostExecutionThread;
 import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
- * Thread abstraction created to change the execution context from any thread to any other thread.
- * Useful to encapsulate a UI Thread for example, since some job will be done in background, an
- * implementation of this interface will change context and update the UI.
+ * MainThread (UI Thread) implementation based on a {@link rx.Scheduler}
+ * which will execute actions on the Android UI thread
  */
-public interface PostExecutionThread {
-  Scheduler getScheduler();
+@Singleton
+public class UIThread implements PostExecutionThread {
+
+  @Inject
+  public UIThread() {}
+
+  @Override public Scheduler getScheduler() {
+    return AndroidSchedulers.mainThread();
+  }
 }

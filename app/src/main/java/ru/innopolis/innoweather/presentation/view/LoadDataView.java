@@ -4,9 +4,9 @@ import android.content.Context;
 
 public interface LoadDataView {
 
-  void showBusy();
+  void showProgress();
 
-  void hideBusy();
+  void hideProgress();
 
   void showError(String message);
 

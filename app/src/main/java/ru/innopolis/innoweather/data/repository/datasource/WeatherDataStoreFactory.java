@@ -1,19 +1,36 @@
 package ru.innopolis.innoweather.data.repository.datasource;
 
+import android.content.ContentResolver;
+import android.content.Context;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import ru.innopolis.innoweather.data.net.RestApi;
 import ru.innopolis.innoweather.data.net.RestApiImpl;
+import ru.innopolis.innoweather.domain.Weather;
 
+@Singleton
 public class WeatherDataStoreFactory {
     private static final String TAG = "WeatherDataStoreFactory";
 
-    public WeatherDataStore create(int cityId) {
+    private final Context context;
+
+    @Inject
+    public WeatherDataStoreFactory(Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException("Constructor parameters cannot be null!!!");
+        }
+        this.context = context.getApplicationContext();
+    }
+
+    public WeatherDataStore create() {
         WeatherDataStore weatherDataStore;
         weatherDataStore = createCloudDataStore();
         return weatherDataStore;
     }
 
     public WeatherDataStore createCloudDataStore() {
-        RestApi restApi = new RestApiImpl();
-        return new CloudWeatherDataStore(restApi);
+        return new CloudWeatherDataStore(new RestApiImpl());
     }
 }
