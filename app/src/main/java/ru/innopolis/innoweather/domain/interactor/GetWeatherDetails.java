@@ -15,18 +15,20 @@ import rx.Observable;
 public class GetWeatherDetails extends UseCase {
 
     private final int cityId;
+    private String units;
     private final WeatherRepository weatherRepository;
 
     @Inject
-    public GetWeatherDetails(int cityId, WeatherRepository weatherRepository,
+    public GetWeatherDetails(int cityId, String units, WeatherRepository weatherRepository,
                              ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.cityId = cityId;
+        this.units = units;
         this.weatherRepository = weatherRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.weatherRepository.weather(this.cityId);
+        return weatherRepository.weather(cityId, units);
     }
 }

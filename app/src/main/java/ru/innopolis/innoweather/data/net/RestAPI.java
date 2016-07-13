@@ -16,5 +16,6 @@ public interface RestApi {
      * @param cityId The city id used to get weather data.
      */
     @GET("weather")
-    Observable<WeatherEntity> getCityWeatherByCityId(@Query("id") Integer cityId);
+    Observable<WeatherEntity> getCityWeatherByCityId(@Query("id") Integer cityId,
+                                                     @Query("units") String units);
 }

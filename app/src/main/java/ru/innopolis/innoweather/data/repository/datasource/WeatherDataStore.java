@@ -8,5 +8,5 @@ import rx.Observable;
  */
 public interface WeatherDataStore {
 
-    Observable<WeatherEntity> weatherEntityDetails(int cityId);
+    Observable<WeatherEntity> weatherEntityDetails(int cityId, String units);
 }

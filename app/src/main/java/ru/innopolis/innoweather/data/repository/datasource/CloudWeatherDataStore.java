@@ -10,8 +10,8 @@ public class CloudWeatherDataStore implements WeatherDataStore {
     private RestApi restApi;
 
     @Override
-    public Observable<WeatherEntity> weatherEntityDetails(int cityId) {
-        return restApi.getCityWeatherByCityId(cityId);
+    public Observable<WeatherEntity> weatherEntityDetails(int cityId, String units) {
+        return restApi.getCityWeatherByCityId(cityId, units);
     }
 
     public CloudWeatherDataStore(RestApi restApi) {

@@ -28,9 +28,9 @@ public class WeatherDataRepository implements WeatherRepository{
 
     // TODO: add local cache
     @Override
-    public Observable<Weather> weather(int weatherId) {
+    public Observable<Weather> weather(int weatherId, String units) {
         final WeatherDataStore weatherDataStore = this.weatherDataStoreFactory.create();
-        return weatherDataStore.weatherEntityDetails(weatherId)
+        return weatherDataStore.weatherEntityDetails(weatherId, units)
                 .map(weatherEntity -> this.weatherEntityDataMapper.transform(weatherEntity));
     }
 }

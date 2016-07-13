@@ -14,7 +14,8 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<WeatherEntity> getCityWeatherByCityId(@Query("id") Integer cityId) {
-        return restApi.getCityWeatherByCityId(cityId);
+    public Observable<WeatherEntity> getCityWeatherByCityId(@Query("id") Integer cityId,
+                                                            @Query("units") String units) {
+        return restApi.getCityWeatherByCityId(cityId, units);
     }
 }
