@@ -6,41 +6,36 @@ package ru.innopolis.innoweather.presentation.model;
 public class CityModel {
     private static final String TAG = "CityModel";
 
-    private int cityId;
-    private String cityName;
-    private String cityCountry;
+    private int Id;
+    private String Name;
+    private String Country;
 
-    WeatherModel weatherModel;
-
-    public int getCityId() {
-        return cityId;
+    public CityModel(int Id) {
+        this.Id = Id;
     }
 
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
+    public int getId() {
+        return Id;
     }
 
-    public String getCityName() {
-        return cityName;
+    public void setId(int Id) {
+        this.Id = Id;
     }
 
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
+    public String getName() {
+        return Name;
     }
 
-    public String getCityCountry() {
-        return cityCountry;
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
-    public void setCityCountry(String cityCountry) {
-        this.cityCountry = cityCountry;
+    public String getCountry() {
+        return Country;
     }
 
-    public WeatherModel getWeatherModel() {
-        return weatherModel;
+    public void setCountry(String Country) {
+        this.Country = Country;
     }
 
-    public void setWeatherModel(WeatherModel weatherModel) {
-        this.weatherModel = weatherModel;
-    }
 }

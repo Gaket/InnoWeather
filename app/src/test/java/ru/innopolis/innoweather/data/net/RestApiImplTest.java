@@ -16,7 +16,7 @@ public class RestApiImplTest {
     @Before
     public void init() {
         RestApi restApi = new RestApiImpl();
-        weatherEntityObservable = restApi.getCityWeatherByCityId(2172797);
+        weatherEntityObservable = restApi.getCityWeatherByCityId(524901, "RU"); // Moscow
         // Try to print weather once for manual testing
     }
 

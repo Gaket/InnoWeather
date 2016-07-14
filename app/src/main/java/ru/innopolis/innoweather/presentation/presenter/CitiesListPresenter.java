@@ -3,16 +3,18 @@ package ru.innopolis.innoweather.presentation.presenter;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import ru.innopolis.innoweather.domain.Weather;
+import ru.innopolis.innoweather.domain.City;
 import ru.innopolis.innoweather.domain.interactor.UseCase;
 import ru.innopolis.innoweather.presentation.di.PerActivity;
-import ru.innopolis.innoweather.presentation.mapper.WeatherModelDataMapper;
-import ru.innopolis.innoweather.presentation.model.WeatherModel;
+import ru.innopolis.innoweather.presentation.mapper.CityModelDataMapper;
+import ru.innopolis.innoweather.presentation.model.CityModel;
 import ru.innopolis.innoweather.presentation.view.CitiesListView;
-import ru.innopolis.innoweather.presentation.view.WeatherDetailsView;
 import rx.Subscriber;
 
 @PerActivity
@@ -21,17 +23,17 @@ public class CitiesListPresenter implements Presenter {
 
     private CitiesListView citiesListView;
 
-    private final UseCase weatherDetailsUseCase;
-    private final WeatherModelDataMapper weatherModelDataMapper;
+    private final UseCase getCitiesUseCase;
+    private final CityModelDataMapper cityModelDataMapper;
 
     @Inject
-    public CitiesListPresenter(@Named("weatherDetails") UseCase weatherDetailsUseCase,
-                               WeatherModelDataMapper weatherModelDataMapper) {
-        this.weatherDetailsUseCase = weatherDetailsUseCase;
-        this.weatherModelDataMapper = weatherModelDataMapper;
+    public CitiesListPresenter(@Named("weatherDetails") UseCase getCitiesUseCase,
+                               CityModelDataMapper cityModelDataMapper) {
+        this.getCitiesUseCase = getCitiesUseCase;
+        this.cityModelDataMapper = cityModelDataMapper;
     }
 
-    public void setView(@NonNull WeatherDetailsView view) {
+    public void setView(@NonNull CitiesListView view) {
         this.citiesListView = view;
     }
 
@@ -45,54 +47,58 @@ public class CitiesListPresenter implements Presenter {
 
     @Override
     public void destroy() {
-        weatherDetailsUseCase.unsubscribe();
+        getCitiesUseCase.unsubscribe();
         citiesListView = null;
     }
 
     /**
-     * Initializes the presenter by start retrieving Weather details.
+     * Initializes the presenter by start retrieving cities list
      */
     public void initialize() {
-        this.loadWeatherDetails();
+        this.loadCitiesList();
     }
 
     /**
-     * Loads Weather details.
+     * Loads cities list.
      */
-    private void loadWeatherDetails() {
-        showViewBusy();
-        getWeatherDetails();
+    private void loadCitiesList() {
+        showProgressView();
+        getCitiesList();
     }
 
-    private void showViewBusy() {
+    private void showProgressView() {
         citiesListView.showProgress();
     }
 
-    private void hideViewBusy() {
+    private void hideProgressView() {
         citiesListView.hideProgress();
     }
 
-    private void showWeatherDetailsInView(Weather weather) {
-        final WeatherModel weatherModel = weatherModelDataMapper.transform(weather);
-        this.citiesListView.renderWeatherDetails(weatherModel);
+    public void onCityClicked(CityModel cityModel) {
+        citiesListView.viewWeather(cityModel);
     }
 
-    private void getWeatherDetails() {
-        this.weatherDetailsUseCase.execute(new Subscriber<Weather>() {
+    private void showCitiesCollectionInView(Collection<City> cityCollection) {
+        final Collection<CityModel> cityModelCollection = cityModelDataMapper.transform(cityCollection);
+        citiesListView.renderCitiesList(cityModelCollection);
+    }
+
+    private void getCitiesList() {
+        this.getCitiesUseCase.execute(new Subscriber<List<City>>() {
             @Override
             public void onCompleted() {
-                hideViewBusy();
+                hideProgressView();
             }
 
             @Override
             public void onError(Throwable e) {
-                hideViewBusy();
+                hideProgressView();
                 Log.e(TAG, "onError: ", e);
             }
 
             @Override
-            public void onNext(Weather weather) {
-                showWeatherDetailsInView(weather);
+            public void onNext(List<City> cities) {
+                showCitiesCollectionInView(cities);
             }
         });
     }

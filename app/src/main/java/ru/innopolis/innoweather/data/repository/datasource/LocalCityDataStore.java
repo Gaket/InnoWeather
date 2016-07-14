@@ -25,7 +25,8 @@ public class LocalCityDataStore implements CityDataStore {
 
     private List<CityEntity> getCityEntities(Reader reader) {
         Gson gson = new Gson();
-        Type collectionType = new TypeToken<Collection<CityEntity>>() {}.getType();
+        Type collectionType = new TypeToken<Collection<CityEntity>>() {
+        }.getType();
         return gson.fromJson(reader, collectionType);
     }
 

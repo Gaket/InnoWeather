@@ -2,7 +2,6 @@ package ru.innopolis.innoweather.presentation.view.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.view.Window;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

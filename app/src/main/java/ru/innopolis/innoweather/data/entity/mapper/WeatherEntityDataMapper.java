@@ -9,8 +9,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.innopolis.innoweather.data.entity.internals.Main;
 import ru.innopolis.innoweather.data.entity.WeatherEntity;
+import ru.innopolis.innoweather.data.entity.internals.Main;
 import ru.innopolis.innoweather.domain.Weather;
 
 /**

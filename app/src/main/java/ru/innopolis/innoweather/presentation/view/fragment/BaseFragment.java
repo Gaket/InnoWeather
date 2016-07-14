@@ -1,6 +1,6 @@
 package ru.innopolis.innoweather.presentation.view.fragment;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import ru.innopolis.innoweather.presentation.di.HasComponent;

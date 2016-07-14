@@ -37,7 +37,8 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     }
 
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getComponent(WeatherComponent.class).inject(this);
     }

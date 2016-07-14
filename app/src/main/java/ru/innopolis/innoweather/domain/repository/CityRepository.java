@@ -3,7 +3,6 @@ package ru.innopolis.innoweather.domain.repository;
 import java.util.List;
 
 import ru.innopolis.innoweather.domain.City;
-import ru.innopolis.innoweather.domain.Weather;
 import rx.Observable;
 
 /**

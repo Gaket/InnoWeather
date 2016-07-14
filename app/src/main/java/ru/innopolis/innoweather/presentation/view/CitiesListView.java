@@ -1,12 +1,22 @@
 package ru.innopolis.innoweather.presentation.view;
 
-import java.util.List;
+import java.util.Collection;
 
 import ru.innopolis.innoweather.presentation.model.CityModel;
 
 public interface CitiesListView extends LoadDataView {
 
-  void renderCitiesList (List<CityModel> cityModels);
+    /**
+     * Render a cities list in the UI
+     *
+     * @param cityModels
+     */
+    void renderCitiesList(Collection<CityModel> cityModels);
 
-  void viewWeather (CityModel cityModel);
+    /**
+     * Show weather in the given city
+     *
+     * @param cityModel
+     */
+    void viewWeather(CityModel cityModel);
 }

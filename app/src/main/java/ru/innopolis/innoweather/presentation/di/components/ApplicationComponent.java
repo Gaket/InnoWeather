@@ -17,11 +17,14 @@ import ru.innopolis.innoweather.presentation.view.activity.BaseActivity;
 @Singleton
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
-  void inject(BaseActivity baseActivity);
+    void inject(BaseActivity baseActivity);
 
-  //Exposed to sub-graphs.
-  Context context();
-  ThreadExecutor threadExecutor();
-  PostExecutionThread postExecutionThread();
-  WeatherRepository weatherRepository();
+    //Exposed to sub-graphs.
+    Context context();
+
+    ThreadExecutor threadExecutor();
+
+    PostExecutionThread postExecutionThread();
+
+    WeatherRepository weatherRepository();
 }

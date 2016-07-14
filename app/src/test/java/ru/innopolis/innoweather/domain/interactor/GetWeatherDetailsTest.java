@@ -16,6 +16,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 public class GetWeatherDetailsTest {
 
     private static final int FAKE_CITY_ID = 1;
+    private static final String UNITS = "metric";
 
     private GetWeatherDetails getWeatherDetails;
 
@@ -26,7 +27,7 @@ public class GetWeatherDetailsTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        getWeatherDetails = new GetWeatherDetails(FAKE_CITY_ID, mockWeatherRepository,
+        getWeatherDetails = new GetWeatherDetails(FAKE_CITY_ID, UNITS, mockWeatherRepository,
                 mockThreadExecutor, mockPostExecutionThread);
     }
 
@@ -34,7 +35,7 @@ public class GetWeatherDetailsTest {
     public void testGetUserDetailsUseCaseObservableHappyCase() {
         getWeatherDetails.buildUseCaseObservable();
 
-        verify(mockWeatherRepository).weather(FAKE_CITY_ID);
+        verify(mockWeatherRepository).weather(FAKE_CITY_ID, UNITS);
         verifyNoMoreInteractions(mockWeatherRepository);
         verifyZeroInteractions(mockPostExecutionThread);
         verifyZeroInteractions(mockThreadExecutor);

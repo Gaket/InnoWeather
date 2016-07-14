@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import ru.innopolis.innoweather.domain.Weather;
 import ru.innopolis.innoweather.domain.executor.PostExecutionThread;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
-import ru.innopolis.innoweather.domain.repository.WeatherRepository;
+import ru.innopolis.innoweather.domain.repository.CityRepository;
 import rx.Observable;
 
 /**
@@ -14,18 +14,17 @@ import rx.Observable;
  */
 public class GetCitiesList extends UseCase {
 
-    private final CitiesRepository citiesRepository;
+    private final CityRepository cityRepository;
 
     @Inject
-    public GetCitiesList(int cityId, WeatherRepository weatherRepository,
+    public GetCitiesList(CityRepository cityRepository,
                          ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
-        this.cityId = cityId;
-        this.weatherRepository = weatherRepository;
+        this.cityRepository = cityRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.weatherRepository.weather(this.cityId);
+        return this.cityRepository.cities();
     }
 }

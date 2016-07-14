@@ -19,32 +19,33 @@ import ru.innopolis.innoweather.presentation.UIThread;
  */
 @Module
 public class ApplicationModule {
-  private final AndroidApplication application;
+    private final AndroidApplication application;
 
-  public ApplicationModule(AndroidApplication application) {
-    this.application = application;
-  }
+    public ApplicationModule(AndroidApplication application) {
+        this.application = application;
+    }
 
-  @Provides
-  @Singleton Context provideApplicationContext() {
-    return this.application;
-  }
+    @Provides
+    @Singleton
+    Context provideApplicationContext() {
+        return this.application;
+    }
 
-  @Provides
-  @Singleton
-  ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
-    return jobExecutor;
-  }
+    @Provides
+    @Singleton
+    ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
+        return jobExecutor;
+    }
 
-  @Provides
-  @Singleton
-  PostExecutionThread providePostExecutionThread(UIThread uiThread) {
-    return uiThread;
-  }
+    @Provides
+    @Singleton
+    PostExecutionThread providePostExecutionThread(UIThread uiThread) {
+        return uiThread;
+    }
 
-  @Provides
-  @Singleton
-  WeatherRepository provideWeatherRepository(WeatherDataRepository weatherDataRepository) {
-    return weatherDataRepository;
-  }
+    @Provides
+    @Singleton
+    WeatherRepository provideWeatherRepository(WeatherDataRepository weatherDataRepository) {
+        return weatherDataRepository;
+    }
 }
