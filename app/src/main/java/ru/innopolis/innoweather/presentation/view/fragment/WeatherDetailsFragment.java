@@ -15,7 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.innopolis.innoweather.R;
-import ru.innopolis.innoweather.presentation.di.components.WeatherComponent;
+import ru.innopolis.innoweather.presentation.di.components.UserComponent;
 import ru.innopolis.innoweather.presentation.model.WeatherModel;
 import ru.innopolis.innoweather.presentation.presenter.WeatherDetailsPresenter;
 import ru.innopolis.innoweather.presentation.view.WeatherDetailsView;
@@ -36,10 +36,10 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     public WeatherDetailsFragment() {
     }
 
-
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getComponent(WeatherComponent.class).inject(this);
+        this.getComponent(UserComponent.class).inject(this);
     }
 
     @Override

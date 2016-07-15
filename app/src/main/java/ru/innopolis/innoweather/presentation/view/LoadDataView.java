@@ -4,11 +4,11 @@ import android.content.Context;
 
 public interface LoadDataView {
 
-  void showProgress();
+    void showProgress();
 
-  void hideProgress();
+    void hideProgress();
 
-  void showError(String message);
+    void showError(String message);
 
-  Context getContext();
+    Context getContext();
 }

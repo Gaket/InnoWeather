@@ -59,15 +59,15 @@ public class WeatherDetailsPresenter implements Presenter {
      * Loads Weather details.
      */
     private void loadWeatherDetails() {
-        showViewBusy();
+        showProgressView();
         getWeatherDetails();
     }
 
-    private void showViewBusy() {
+    private void showProgressView() {
         viewDetailsView.showProgress();
     }
 
-    private void hideViewBusy() {
+    private void hideProgressView() {
         viewDetailsView.hideProgress();
     }
 
@@ -80,12 +80,12 @@ public class WeatherDetailsPresenter implements Presenter {
         weatherDetailsUseCase.execute(new Subscriber<Weather>() {
             @Override
             public void onCompleted() {
-                hideViewBusy();
+                hideProgressView();
             }
 
             @Override
             public void onError(Throwable e) {
-                hideViewBusy();
+                hideProgressView();
                 Log.e(TAG, "onError: ", e);
             }
 

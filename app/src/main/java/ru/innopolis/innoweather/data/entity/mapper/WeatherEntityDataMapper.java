@@ -9,8 +9,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.innopolis.innoweather.data.entity.internals.Main;
 import ru.innopolis.innoweather.data.entity.WeatherEntity;
+import ru.innopolis.innoweather.data.entity.internals.Main;
 import ru.innopolis.innoweather.domain.Weather;
 
 /**
@@ -27,26 +27,24 @@ public class WeatherEntityDataMapper {
     public Weather transform(WeatherEntity weatherEntity) {
         Weather weather = null;
         if (weatherEntity != null) {
-            if (weatherEntity.getWind() != null &&
-                    weatherEntity.getClouds() != null &&
-                    weatherEntity.getWeather() != null) {
-                weather = new Weather(weatherEntity.getCityId());
-                Main main = weatherEntity.getMain();
-                weather.setHumidity(main.getHumidity());
-                weather.setPressure(main.getPressure());
-                weather.setTemp(main.getTemp());
-                weather.setTempMax(main.getTempMax());
-                weather.setTempMin(main.getTempMin());
-                weather.setCloudiness(weatherEntity.getWeather().get(0).getDescription());
-            } else {
-                Log.e(TAG, "transform: problem with downloaded weatherEntity");
-            }
+            weather = new Weather(weatherEntity.getCityId());
+            Main main = weatherEntity.getMain();
+            weather.setHumidity(main.getHumidity());
+            weather.setPressure(main.getPressure());
+            weather.setTemp(main.getTemp());
+            weather.setTempMax(main.getTempMax());
+            weather.setTempMin(main.getTempMin());
+            // TODO: handle cituation if there is more than one description
+            weather.setCloudiness(weatherEntity.getWeather().get(0).getDescription());
+        } else {
+            Log.e(TAG, "transform: problem with downloaded weatherEntity");
         }
+
         return weather;
     }
 
     public List<Weather> transform(Collection<WeatherEntity> WeatherEntityCollection) {
-        List<Weather> weatherList = new ArrayList<>(20);
+        List<Weather> weatherList = new ArrayList<>();
         Weather Weather;
         for (WeatherEntity WeatherEntity : WeatherEntityCollection) {
             Weather = transform(WeatherEntity);

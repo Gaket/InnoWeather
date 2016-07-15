@@ -1,8 +1,6 @@
 package ru.innopolis.innoweather.domain;
 
 public class Weather {
-    private static final String TAG = "Weather";
-
     private int cityId;
     private double temp;
     private double pressure;

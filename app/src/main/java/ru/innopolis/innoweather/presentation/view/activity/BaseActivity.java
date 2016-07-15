@@ -1,15 +1,15 @@
 package ru.innopolis.innoweather.presentation.view.activity;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 
 import ru.innopolis.innoweather.presentation.AndroidApplication;
 import ru.innopolis.innoweather.presentation.di.components.ApplicationComponent;
 import ru.innopolis.innoweather.presentation.di.modules.ActivityModule;
 
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
 
     @Override
@@ -19,7 +19,7 @@ public abstract class BaseActivity extends Activity {
     }
 
     protected void addFragment(int containerViewId, Fragment fragment) {
-        FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(containerViewId, fragment);
         fragmentTransaction.commit();
     }
@@ -30,7 +30,7 @@ public abstract class BaseActivity extends Activity {
      * @return {@link ApplicationComponent}
      */
     protected ApplicationComponent getApplicationComponent() {
-        return ((AndroidApplication)getApplication()).getApplicationComponent();
+        return ((AndroidApplication) getApplication()).getApplicationComponent();
     }
 
     /**

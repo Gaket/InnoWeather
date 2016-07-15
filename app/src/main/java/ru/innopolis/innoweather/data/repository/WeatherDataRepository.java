@@ -14,7 +14,7 @@ import rx.Observable;
  * Repository that decides if Cloud or Local datastore should be used
  */
 @Singleton
-public class WeatherDataRepository implements WeatherRepository{
+public class WeatherDataRepository implements WeatherRepository {
     private static final String TAG = "WeatherDataRepository";
 
     private final WeatherDataStoreFactory weatherDataStoreFactory;
@@ -31,6 +31,6 @@ public class WeatherDataRepository implements WeatherRepository{
     public Observable<Weather> weather(int weatherId, String units) {
         final WeatherDataStore weatherDataStore = this.weatherDataStoreFactory.create();
         return weatherDataStore.weatherEntityDetails(weatherId, units)
-                .map(weatherEntity -> this.weatherEntityDataMapper.transform(weatherEntity));
+                .map(weatherEntity -> weatherEntityDataMapper.transform(weatherEntity));
     }
 }

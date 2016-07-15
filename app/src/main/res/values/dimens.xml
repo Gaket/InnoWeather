@@ -6,4 +6,5 @@
 
     <dimen name="header_text_size">26sp</dimen>
     <dimen name="header_margin">5dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>
