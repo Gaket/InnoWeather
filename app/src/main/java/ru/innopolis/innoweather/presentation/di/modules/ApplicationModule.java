@@ -7,9 +7,11 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import ru.innopolis.innoweather.data.executor.JobExecutor;
+import ru.innopolis.innoweather.data.repository.CityDataRepository;
 import ru.innopolis.innoweather.data.repository.WeatherDataRepository;
 import ru.innopolis.innoweather.domain.executor.PostExecutionThread;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
+import ru.innopolis.innoweather.domain.repository.CityRepository;
 import ru.innopolis.innoweather.domain.repository.WeatherRepository;
 import ru.innopolis.innoweather.presentation.AndroidApplication;
 import ru.innopolis.innoweather.presentation.UIThread;
@@ -47,5 +49,11 @@ public class ApplicationModule {
     @Singleton
     WeatherRepository provideWeatherRepository(WeatherDataRepository weatherDataRepository) {
         return weatherDataRepository;
+    }
+
+    @Provides
+    @Singleton
+    CityRepository provideCityRepository(CityDataRepository citiesRepository) {
+        return citiesRepository;
     }
 }

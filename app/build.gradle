@@ -32,9 +32,9 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.0.86-beta'
     apt "com.google.dagger:dagger-compiler:2.5"
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
-    debugCompile 'org.mockito:mockito-core:2.0.86-beta'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.jakewharton:butterknife:8.2.1'

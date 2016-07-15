@@ -10,11 +10,19 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import ru.innopolis.innoweather.data.entity.CityEntity;
 import rx.Observable;
 
+@Singleton
 public class LocalCityDataStore implements CityDataStore {
     private static final String TAG = "LocalCityDataStore";
+
+    @Inject
+    public LocalCityDataStore() {
+    }
 
     @Override
     public Observable<List<CityEntity>> cities() {

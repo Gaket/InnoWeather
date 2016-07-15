@@ -7,19 +7,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.innopolis.innoweather.R;
 import ru.innopolis.innoweather.presentation.di.HasComponent;
-import ru.innopolis.innoweather.presentation.di.components.DaggerWeatherComponent;
-import ru.innopolis.innoweather.presentation.di.components.WeatherComponent;
-import ru.innopolis.innoweather.presentation.di.modules.WeatherModule;
+import ru.innopolis.innoweather.presentation.di.components.DaggerUserComponent;
+import ru.innopolis.innoweather.presentation.di.components.UserComponent;
+import ru.innopolis.innoweather.presentation.di.modules.UserModule;
+import ru.innopolis.innoweather.presentation.view.fragment.CitiesListFragment;
 import ru.innopolis.innoweather.presentation.view.fragment.WeatherDetailsFragment;
 
-public class MainActivity extends BaseActivity implements HasComponent<WeatherComponent> {
+public class MainActivity extends BaseActivity implements HasComponent<UserComponent> {
 
     private static final String INTENT_EXTRA_PARAM_CITY_ID = "RU.INNO_WEATHER.INTENT_PARAM_CITY_ID";
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
     private int cityId;
-    private WeatherComponent weatherComponent;
+    private UserComponent userComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class MainActivity extends BaseActivity implements HasComponent<WeatherCo
         if (savedInstanceState == null) {
             // TODO: remove default cityid
             this.cityId = getIntent().getIntExtra(INTENT_EXTRA_PARAM_CITY_ID, 2172797);
-            addFragment(R.id.fragmentContainer, new WeatherDetailsFragment());
+            addFragment(R.id.fragmentContainer, new CitiesListFragment());
         } else {
             // restore state
         }
@@ -43,16 +44,16 @@ public class MainActivity extends BaseActivity implements HasComponent<WeatherCo
 
 
     private void initializeInjector() {
-        this.weatherComponent = DaggerWeatherComponent.builder()
+        this.userComponent = DaggerUserComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .weatherModule(new WeatherModule(this.cityId))
+                .userModule(new UserModule(this.cityId))
                 .build();
     }
 
     @Override
-    public WeatherComponent getComponent() {
-        return weatherComponent;
+    public UserComponent getComponent() {
+        return userComponent;
     }
 
 }

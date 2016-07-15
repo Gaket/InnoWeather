@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import ru.innopolis.innoweather.domain.executor.PostExecutionThread;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
+import ru.innopolis.innoweather.domain.repository.CityRepository;
 import ru.innopolis.innoweather.domain.repository.WeatherRepository;
 import ru.innopolis.innoweather.presentation.di.modules.ApplicationModule;
 import ru.innopolis.innoweather.presentation.view.activity.BaseActivity;
@@ -27,4 +28,6 @@ public interface ApplicationComponent {
     PostExecutionThread postExecutionThread();
 
     WeatherRepository weatherRepository();
+
+    CityRepository cityRepository();
 }

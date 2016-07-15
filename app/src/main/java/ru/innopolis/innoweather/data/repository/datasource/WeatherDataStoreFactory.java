@@ -11,6 +11,7 @@ import ru.innopolis.innoweather.data.net.RestApiImpl;
 public class WeatherDataStoreFactory {
     private static final String TAG = "WeatherDataStoreFactory";
 
+    // Will be used for caching
     private final Context context;
 
     @Inject

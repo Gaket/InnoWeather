@@ -7,10 +7,12 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import ru.innopolis.innoweather.data.entity.CityEntity;
 import ru.innopolis.innoweather.domain.City;
 
+@Singleton
 public class CityEntityDataMapper {
     private static final String TAG = "CityEntityDataMapper";
 

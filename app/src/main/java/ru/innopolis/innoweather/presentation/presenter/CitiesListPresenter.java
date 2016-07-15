@@ -27,7 +27,7 @@ public class CitiesListPresenter implements Presenter {
     private final CityModelDataMapper cityModelDataMapper;
 
     @Inject
-    public CitiesListPresenter(@Named("weatherDetails") UseCase getCitiesUseCase,
+    public CitiesListPresenter(@Named("citiesList") UseCase getCitiesUseCase,
                                CityModelDataMapper cityModelDataMapper) {
         this.getCitiesUseCase = getCitiesUseCase;
         this.cityModelDataMapper = cityModelDataMapper;

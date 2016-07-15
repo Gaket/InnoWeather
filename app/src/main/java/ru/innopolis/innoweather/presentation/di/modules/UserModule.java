@@ -22,8 +22,10 @@ import dagger.Module;
 import dagger.Provides;
 import ru.innopolis.innoweather.domain.executor.PostExecutionThread;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
+import ru.innopolis.innoweather.domain.interactor.GetCitiesList;
 import ru.innopolis.innoweather.domain.interactor.GetWeatherDetails;
 import ru.innopolis.innoweather.domain.interactor.UseCase;
+import ru.innopolis.innoweather.domain.repository.CityRepository;
 import ru.innopolis.innoweather.domain.repository.WeatherRepository;
 import ru.innopolis.innoweather.presentation.di.PerActivity;
 
@@ -31,16 +33,16 @@ import ru.innopolis.innoweather.presentation.di.PerActivity;
  * Dagger module that provides user related collaborators.
  */
 @Module
-public class WeatherModule {
+public class UserModule {
 
     // TODO: remove hardcoded values
     private int cityId = 2172797;
     private String units = "metric";
 
-    public WeatherModule() {
+    public UserModule() {
     }
 
-    public WeatherModule(int cityId) {
+    public UserModule(int cityId) {
         this.cityId = cityId;
     }
 
@@ -52,5 +54,14 @@ public class WeatherModule {
             WeatherRepository weatherRepository, ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread) {
         return new GetWeatherDetails(cityId, units, weatherRepository, threadExecutor, postExecutionThread);
+    }
+
+    @Provides
+    @PerActivity
+    @Named("citiesList")
+    UseCase provideGetCitiesListUseCase(
+            CityRepository citiesRepository, ThreadExecutor threadExecutor,
+            PostExecutionThread postExecutionThread) {
+        return new GetCitiesList(citiesRepository, threadExecutor, postExecutionThread);
     }
 }
