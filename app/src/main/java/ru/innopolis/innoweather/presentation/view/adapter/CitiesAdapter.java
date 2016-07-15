@@ -66,14 +66,14 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setCitiesCollection(Collection<CityModel> citiesList) {
-        validateUsersCollection(citiesList);
-        this.citiesCollection = citiesList;
+    public void setCitiesCollection(Collection<CityModel> citiesCollection) {
+        validateCitiesCollection(citiesCollection);
+        this.citiesCollection = citiesCollection;
         notifyDataSetChanged();
     }
 
 
-    private void validateUsersCollection(Collection<CityModel> citiesList) {
+    private void validateCitiesCollection(Collection<CityModel> citiesList) {
         if (citiesList == null) {
             throw new IllegalArgumentException("The list cannot be null");
         }

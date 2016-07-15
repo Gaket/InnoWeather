@@ -1,7 +1,10 @@
 package ru.innopolis.innoweather.domain.interactor;
 
+import android.support.annotation.Dimension;
+
 import javax.inject.Inject;
 
+import ru.innopolis.innoweather.data.entity.internals.Units;
 import ru.innopolis.innoweather.domain.Weather;
 import ru.innopolis.innoweather.domain.executor.PostExecutionThread;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
@@ -15,11 +18,11 @@ import rx.Observable;
 public class GetWeatherDetails extends UseCase {
 
     private final int cityId;
-    private String units;
+    private Units units;
     private final WeatherRepository weatherRepository;
 
     @Inject
-    public GetWeatherDetails(int cityId, String units, WeatherRepository weatherRepository,
+    public GetWeatherDetails(int cityId, Units units, WeatherRepository weatherRepository,
                              ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.cityId = cityId;
@@ -29,6 +32,6 @@ public class GetWeatherDetails extends UseCase {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return weatherRepository.weather(cityId, units);
+        return weatherRepository.weather(cityId, units.name());
     }
 }

@@ -5,12 +5,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import javax.inject.Inject;
+
 import ru.innopolis.innoweather.presentation.AndroidApplication;
 import ru.innopolis.innoweather.presentation.di.components.ApplicationComponent;
 import ru.innopolis.innoweather.presentation.di.modules.ActivityModule;
+import ru.innopolis.innoweather.presentation.navigation.Navigator;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
+
+    @Inject
+    Navigator navigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

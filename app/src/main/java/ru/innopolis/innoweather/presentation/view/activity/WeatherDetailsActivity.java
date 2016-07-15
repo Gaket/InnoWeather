@@ -1,36 +1,38 @@
 package ru.innopolis.innoweather.presentation.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
+import android.view.Window;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.innopolis.innoweather.R;
 import ru.innopolis.innoweather.presentation.di.HasComponent;
 import ru.innopolis.innoweather.presentation.di.components.DaggerUserComponent;
 import ru.innopolis.innoweather.presentation.di.components.UserComponent;
 import ru.innopolis.innoweather.presentation.di.modules.UserModule;
-import ru.innopolis.innoweather.presentation.model.CityModel;
 import ru.innopolis.innoweather.presentation.view.fragment.CitiesListFragment;
 import ru.innopolis.innoweather.presentation.view.fragment.WeatherDetailsFragment;
 
-public class MainActivity extends BaseActivity implements HasComponent<UserComponent>, CitiesListFragment.CityListListener {
+public class WeatherDetailsActivity extends BaseActivity implements HasComponent<UserComponent> {
 
     private static final String INTENT_EXTRA_PARAM_CITY_ID = "RU.INNO_WEATHER.INTENT_PARAM_CITY_ID";
+    private static final String INSTANCE_STATE_PARAM_USER_ID = "org.android10.STATE_PARAM_USER_ID";
 
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+    public static Intent getCallingIntent(Context context, int cityId) {
+        Intent callingIntent = new Intent(context, WeatherDetailsActivity.class);
+        callingIntent.putExtra(INTENT_EXTRA_PARAM_CITY_ID, cityId);
+        return callingIntent;
+    }
+
     private int cityId;
     private UserComponent userComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setContentView(R.layout.activity_layout);
         // TODO: look at what requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); is
-        ButterKnife.bind(this);
         initializeActivity(savedInstanceState);
         initializeInjector();
     }
@@ -39,10 +41,18 @@ public class MainActivity extends BaseActivity implements HasComponent<UserCompo
         if (savedInstanceState == null) {
             // TODO: remove default cityid
             this.cityId = getIntent().getIntExtra(INTENT_EXTRA_PARAM_CITY_ID, -1);
-            addFragment(R.id.fragmentContainer, new CitiesListFragment());
+            addFragment(R.id.fragmentContainer, new WeatherDetailsFragment());
         } else {
-            // restore state
+            this.cityId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_USER_ID);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (outState != null) {
+            outState.putInt(INSTANCE_STATE_PARAM_USER_ID, this.cityId);
+        }
+        super.onSaveInstanceState(outState);
     }
 
 
@@ -59,11 +69,4 @@ public class MainActivity extends BaseActivity implements HasComponent<UserCompo
         return userComponent;
     }
 
-    @Override
-    public void onCityClicked(CityModel cityModel) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, new WeatherDetailsFragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 }

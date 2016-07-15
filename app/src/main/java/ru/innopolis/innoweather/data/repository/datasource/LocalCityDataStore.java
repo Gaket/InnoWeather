@@ -39,7 +39,7 @@ public class LocalCityDataStore implements CityDataStore {
     }
 
     private static final String initialData = "[" +
-            "{_id:743615,name:Kazan,country:TR,coord:{lon:32.683891,lat:40.23167}}, " +
-            "{_id:524901,name:Moscow,country:RU,coord:{lon:37.615555,lat:55.75222}}" +
+            "{id:743615,name:Kazan,country:TR,coord:{lon:32.683891,lat:40.23167}}, " +
+            "{id:524901,name:Moscow,country:RU,coord:{lon:37.615555,lat:55.75222}}" +
             "]";
 }
