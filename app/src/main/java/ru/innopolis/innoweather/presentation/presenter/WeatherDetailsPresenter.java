@@ -18,20 +18,20 @@ import rx.Subscriber;
 public class WeatherDetailsPresenter implements Presenter {
     private static String TAG = "WeatherDetailsPresenter";
 
-    private WeatherDetailsView viewDetailsView;
+    private WeatherDetailsView mViewDetailsView;
 
-    private final UseCase weatherDetailsUseCase;
-    private final WeatherModelDataMapper weatherModelDataMapper;
+    private final UseCase mWeatherDetailsUseCase;
+    private final WeatherModelDataMapper mWeatherModelDataMapper;
 
     @Inject
     public WeatherDetailsPresenter(@Named("weatherDetails") UseCase weatherDetailsUseCase,
                                    WeatherModelDataMapper weatherModelDataMapper) {
-        this.weatherDetailsUseCase = weatherDetailsUseCase;
-        this.weatherModelDataMapper = weatherModelDataMapper;
+        this.mWeatherDetailsUseCase = weatherDetailsUseCase;
+        this.mWeatherModelDataMapper = weatherModelDataMapper;
     }
 
     public void setView(@NonNull WeatherDetailsView view) {
-        this.viewDetailsView = view;
+        this.mViewDetailsView = view;
     }
 
     @Override
@@ -44,15 +44,15 @@ public class WeatherDetailsPresenter implements Presenter {
 
     @Override
     public void destroy() {
-        weatherDetailsUseCase.unsubscribe();
-        viewDetailsView = null;
+        mWeatherDetailsUseCase.unsubscribe();
+        mViewDetailsView = null;
     }
 
     /**
      * Initializes the presenter by start retrieving Weather details.
      */
     public void initialize() {
-        this.loadWeatherDetails();
+        loadWeatherDetails();
     }
 
     /**
@@ -64,20 +64,23 @@ public class WeatherDetailsPresenter implements Presenter {
     }
 
     private void showProgressView() {
-        viewDetailsView.showProgress();
+        mViewDetailsView.showProgress();
     }
 
     private void hideProgressView() {
-        viewDetailsView.hideProgress();
+        mViewDetailsView.hideProgress();
     }
 
     private void showWeatherDetailsInView(Weather weather) {
-        final WeatherModel weatherModel = weatherModelDataMapper.transform(weather);
-        this.viewDetailsView.renderWeatherDetails(weatherModel);
+        final WeatherModel weatherModel = mWeatherModelDataMapper.transform(weather);
+        this.mViewDetailsView.renderWeatherDetails(weatherModel);
     }
 
+    /**
+     * Gets weather details and shows them in view
+     */
     private void getWeatherDetails() {
-        weatherDetailsUseCase.execute(new Subscriber<Weather>() {
+        mWeatherDetailsUseCase.execute(new Subscriber<Weather>() {
             @Override
             public void onCompleted() {
                 hideProgressView();

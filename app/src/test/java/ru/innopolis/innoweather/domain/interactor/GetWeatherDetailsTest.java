@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import ru.innopolis.innoweather.data.entity.internals.Units;
+import ru.innopolis.innoweather.data.entity.UnitsEntity;
 import ru.innopolis.innoweather.domain.executor.PostExecutionThread;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
 import ru.innopolis.innoweather.domain.repository.WeatherRepository;
@@ -27,7 +27,7 @@ public class GetWeatherDetailsTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        getWeatherDetails = new GetWeatherDetails(FAKE_CITY_ID, Units.metric, mockWeatherRepository,
+        getWeatherDetails = new GetWeatherDetails(FAKE_CITY_ID, UnitsEntity.metric, mockWeatherRepository,
                 mockThreadExecutor, mockPostExecutionThread);
     }
 
@@ -35,7 +35,7 @@ public class GetWeatherDetailsTest {
     public void testGetUserDetailsUseCaseObservableHappyCase() {
         getWeatherDetails.buildUseCaseObservable();
 
-        verify(mockWeatherRepository).weather(FAKE_CITY_ID, Units.metric.name());
+        verify(mockWeatherRepository).weather(FAKE_CITY_ID, UnitsEntity.metric.name());
         verifyNoMoreInteractions(mockWeatherRepository);
         verifyZeroInteractions(mockPostExecutionThread);
         verifyZeroInteractions(mockThreadExecutor);

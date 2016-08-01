@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="view_text_temperature">Температура:</string>
     <string name="view_text_cloudiness">Облачность</string>
+    <string name="menu_title_update">Update</string>
+    <string name="menu_add_new_city">Add new city</string>
 </resources>

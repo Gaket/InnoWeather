@@ -20,7 +20,7 @@ import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
-import ru.innopolis.innoweather.data.entity.internals.Units;
+import ru.innopolis.innoweather.data.entity.UnitsEntity;
 import ru.innopolis.innoweather.domain.executor.PostExecutionThread;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
 import ru.innopolis.innoweather.domain.interactor.GetCitiesList;
@@ -53,7 +53,7 @@ public class UserModule {
     UseCase provideGetWeatherDetailsUseCase(
             WeatherRepository weatherRepository, ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread) {
-        return new GetWeatherDetails(cityId, Units.metric, weatherRepository, threadExecutor, postExecutionThread);
+        return new GetWeatherDetails(cityId, UnitsEntity.metric, weatherRepository, threadExecutor, postExecutionThread);
     }
 
     @Provides

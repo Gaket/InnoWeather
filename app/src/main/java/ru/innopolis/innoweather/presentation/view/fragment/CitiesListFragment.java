@@ -146,4 +146,10 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
         showToastMessage(message);
     }
 
+    @Override
+    public boolean update() {
+        citiesListPresenter.initialize();
+        return true;
+    }
+
 }

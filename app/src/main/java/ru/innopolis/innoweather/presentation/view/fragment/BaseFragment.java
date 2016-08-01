@@ -1,8 +1,10 @@
 package ru.innopolis.innoweather.presentation.view.fragment;
 
 import android.support.v4.app.Fragment;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import ru.innopolis.innoweather.R;
 import ru.innopolis.innoweather.presentation.di.HasComponent;
 
 public abstract class BaseFragment extends Fragment {
@@ -22,4 +24,22 @@ public abstract class BaseFragment extends Fragment {
     protected <C> C getComponent(Class<C> componentType) {
         return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_update:
+                update();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * Updates data in current fragment
+     *
+     * @return true in case of succesful update
+     */
+    public abstract boolean update();
 }
