@@ -54,6 +54,11 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
     }
 
     @Override
+    public void onUpdateClicked() {
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_cities_list, menu);
@@ -79,4 +84,6 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
         });
         return super.onCreateOptionsMenu(menu);
     }
+
+
 }

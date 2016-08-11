@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -31,6 +32,7 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
      */
     public interface CityListListener {
         void onCityClicked(final CityModel cityModel);
+        void onUpdateClicked();
     }
 
     @Inject
@@ -117,6 +119,7 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     public void renderCitiesList(Collection<CityModel> cityModels) {
         if (cityModels != null) {
             citiesAdapter.setCitiesCollection(cityModels);
+            citiesAdapter.notifyDataSetChanged();
         }
     }
 
@@ -150,6 +153,16 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     public boolean update() {
         citiesListPresenter.initialize();
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_update:
+                citiesListPresenter.initialize();
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -118,7 +118,7 @@ public class CitiesListPresenter implements Presenter {
                 getWeatherDetails.execute(new Subscriber<Weather>() {
                     @Override
                     public void onCompleted() {
-
+                        Log.d(TAG, "onCompleted: all weathers here");
                     }
 
                     @Override
@@ -129,6 +129,8 @@ public class CitiesListPresenter implements Presenter {
                     @Override
                     public void onNext(Weather weather) {
                         weatherCollection.add(weather);
+                        showCitiesCollectionInView(citiesCollection, weatherCollection);
+                        Log.d(TAG, "onNext: new weather came");
                     }
                 });
             }

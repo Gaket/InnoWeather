@@ -46,6 +46,9 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
     public void onBindViewHolder(CityViewHolder holder, int position) {
         final CityModel cityModel = ((List<CityModel>) citiesCollection).get(position);
         holder.tvName.setText(cityModel.getName());
+        if (cityModel.getTemp() != null) {
+            holder.tvTemp.setText(cityModel.getTemp().toString());
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,13 +84,14 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
 
 
     public class CityViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.name)
+        @BindView(R.id.tv_cities_name)
         TextView tvName;
+        @BindView(R.id.tv_cities_temp)
+        TextView tvTemp;
 
         public CityViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
         }
     }
 }
