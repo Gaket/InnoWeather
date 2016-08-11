@@ -3,13 +3,15 @@ package ru.innopolis.innoweather.presentation.presenter;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.innopolis.innoweather.domain.City;
+import ru.innopolis.innoweather.domain.Weather;
+import ru.innopolis.innoweather.domain.interactor.GetWeatherDetails;
 import ru.innopolis.innoweather.domain.interactor.UseCase;
 import ru.innopolis.innoweather.presentation.di.PerActivity;
 import ru.innopolis.innoweather.presentation.mapper.CityModelDataMapper;
@@ -24,13 +26,19 @@ public class CitiesListPresenter implements Presenter {
     private CitiesListView citiesListView;
 
     private final UseCase getCitiesUseCase;
+    private final GetWeatherDetails getWeatherDetails;
     private final CityModelDataMapper cityModelDataMapper;
+
+    private Collection<City> citiesCollection = new ArrayList<>();
+    private Collection<City> weatherCollection = new ArrayList<>();
 
     @Inject
     public CitiesListPresenter(@Named("citiesList") UseCase getCitiesUseCase,
+                               @Named("weatherDetails") UseCase getWeatherDetails,
                                CityModelDataMapper cityModelDataMapper) {
         this.getCitiesUseCase = getCitiesUseCase;
         this.cityModelDataMapper = cityModelDataMapper;
+        this.getWeatherDetails = (GetWeatherDetails) getWeatherDetails;
     }
 
     public void setView(@NonNull CitiesListView view) {
@@ -79,15 +87,21 @@ public class CitiesListPresenter implements Presenter {
     }
 
     private void showCitiesCollectionInView(Collection<City> cityCollection) {
+        showCitiesCollectionInView(cityCollection, null);
+    }
+
+    private void showCitiesCollectionInView(Collection<City> cityCollection, Collection<Weather> weatherCollection) {
         final Collection<CityModel> cityModelCollection = cityModelDataMapper.transform(cityCollection);
         citiesListView.renderCitiesList(cityModelCollection);
     }
 
     private void getCitiesList() {
-        this.getCitiesUseCase.execute(new Subscriber<List<City>>() {
+        this.getCitiesUseCase.execute(new Subscriber<City>() {
             @Override
             public void onCompleted() {
                 hideProgressView();
+                showCitiesCollectionInView(citiesCollection);
+                Log.d(TAG, "onCompleted: all cities downloaded");
             }
 
             @Override
@@ -97,10 +111,33 @@ public class CitiesListPresenter implements Presenter {
             }
 
             @Override
-            public void onNext(List<City> cities) {
-                showCitiesCollectionInView(cities);
+            public void onNext(City city) {
+                Log.d(TAG, "onNext: new City came");
+                citiesCollection.add(city);
+                getWeatherDetails.setCityId(city.getId());
+                getWeatherDetails.execute(new Subscriber<Weather>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Weather weather) {
+
+                    }
+                });
             }
         });
+    }
+
+    private void showTemperatureInCity(City city) {
+
+
     }
 
 }

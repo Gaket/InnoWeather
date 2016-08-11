@@ -15,7 +15,7 @@ import rx.Observable;
  */
 public class GetWeatherDetails extends UseCase {
 
-    private final int cityId;
+    private int cityId;
     private UnitsEntity units;
     private final WeatherRepository weatherRepository;
 
@@ -32,4 +32,10 @@ public class GetWeatherDetails extends UseCase {
     protected Observable buildUseCaseObservable() {
         return weatherRepository.weather(cityId, units.name());
     }
+
+    public int getCityId() {
+        return cityId;
+    }
+    public void setCityId(int cityId) {this.cityId = cityId;}
+
 }
