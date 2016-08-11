@@ -30,7 +30,7 @@ public class CitiesListPresenter implements Presenter {
     private final CityModelDataMapper cityModelDataMapper;
 
     private Collection<City> citiesCollection = new ArrayList<>();
-    private Collection<City> weatherCollection = new ArrayList<>();
+    private Collection<Weather> weatherCollection = new ArrayList<>();
 
     @Inject
     public CitiesListPresenter(@Named("citiesList") UseCase getCitiesUseCase,
@@ -91,7 +91,7 @@ public class CitiesListPresenter implements Presenter {
     }
 
     private void showCitiesCollectionInView(Collection<City> cityCollection, Collection<Weather> weatherCollection) {
-        final Collection<CityModel> cityModelCollection = cityModelDataMapper.transform(cityCollection);
+        final Collection<CityModel> cityModelCollection = cityModelDataMapper.transform(cityCollection, weatherCollection);
         citiesListView.renderCitiesList(cityModelCollection);
     }
 
@@ -100,7 +100,7 @@ public class CitiesListPresenter implements Presenter {
             @Override
             public void onCompleted() {
                 hideProgressView();
-                showCitiesCollectionInView(citiesCollection);
+                showCitiesCollectionInView(citiesCollection, weatherCollection);
                 Log.d(TAG, "onCompleted: all cities downloaded");
             }
 
@@ -123,12 +123,12 @@ public class CitiesListPresenter implements Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e(TAG, "onError: ", e);
                     }
 
                     @Override
                     public void onNext(Weather weather) {
-
+                        weatherCollection.add(weather);
                     }
                 });
             }
