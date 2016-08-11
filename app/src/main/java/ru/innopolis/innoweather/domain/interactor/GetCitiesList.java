@@ -14,17 +14,17 @@ import rx.Observable;
  */
 public class GetCitiesList extends UseCase {
 
-    private final CityRepository cityRepository;
+    private final CityRepository mCityRepository;
 
     @Inject
     public GetCitiesList(CityRepository cityRepository,
                          ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
-        this.cityRepository = cityRepository;
+        this.mCityRepository = cityRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.cityRepository.cities();
+        return mCityRepository.cities();
     }
 }

@@ -36,8 +36,7 @@ import ru.innopolis.innoweather.presentation.di.PerActivity;
 @Module
 public class UserModule {
 
-    // TODO: remove hardcoded values
-    private int cityId = 2172797;
+    private int cityId = -1;
 
     public UserModule() {
     }
