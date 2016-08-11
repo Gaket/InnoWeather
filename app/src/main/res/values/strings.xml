@@ -5,4 +5,7 @@
     <string name="view_text_cloudiness">Облачность</string>
     <string name="menu_title_update">Update</string>
     <string name="menu_add_new_city">Add new city</string>
+    <string name="dialog_title_pick_city">Add new city</string>
+    <string name="dialog_add_city">Add</string>
+    <string name="dialog_cancel">Cancel</string>
 </resources>

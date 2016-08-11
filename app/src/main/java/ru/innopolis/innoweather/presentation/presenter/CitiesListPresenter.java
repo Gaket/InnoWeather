@@ -142,4 +142,7 @@ public class CitiesListPresenter implements Presenter {
 
     }
 
+    public void addNewCity() {
+
+    }
 }

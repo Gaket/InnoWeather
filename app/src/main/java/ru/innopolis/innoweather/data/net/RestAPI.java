@@ -2,6 +2,7 @@ package ru.innopolis.innoweather.data.net;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import ru.innopolis.innoweather.data.entity.CityEntity;
 import ru.innopolis.innoweather.data.entity.WeatherEntity;
 import rx.Observable;
 
@@ -18,4 +19,5 @@ public interface RestApi {
     @GET("weather")
     Observable<WeatherEntity> getCityWeatherByCityId(@Query("id") Integer cityId,
                                                      @Query("units") String units);
+
 }
