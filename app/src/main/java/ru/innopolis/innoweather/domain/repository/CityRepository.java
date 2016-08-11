@@ -10,5 +10,5 @@ import rx.Observable;
  */
 public interface CityRepository {
 
-    Observable<List<City>> cities();
+    Observable<City> cities();
 }

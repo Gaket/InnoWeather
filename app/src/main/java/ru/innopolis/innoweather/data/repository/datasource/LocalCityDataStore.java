@@ -6,7 +6,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,10 +27,10 @@ public class LocalCityDataStore implements CityDataStore {
     }
 
     @Override
-    public Observable<List<CityEntity>> cities() {
+    public Observable<CityEntity> cities() {
         Reader initialData = new StringReader(LocalCityDataStore.initialData);
         List<CityEntity> cities = getCityEntities(initialData);
-        return Observable.just(cities);
+        return Observable.from(cities);
     }
 
     private List<CityEntity> getCityEntities(Reader reader) {
