@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/rv_users"
-        android:name="ru.innopolis.innoweather.presentation.view.fragment.CitiesListFragment"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_cities"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        app:layoutManager="LinearLayoutManager"
-        tools:context="ru.innopolis.innoweather.presentation.view.fragment.CitiesListFragment"
-        tools:listitem="@layout/row_city" />
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/card_layout">
+
+    </android.support.v7.widget.RecyclerView>
 
     <include layout="@layout/view_progress" />
 
-</RelativeLayout>
+</LinearLayout>

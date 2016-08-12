@@ -1,13 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppTheme" parent="AppTheme.Base"/>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.Toolbar" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="background">@color/icons</item>
+        <item name="colorControlNormal">@color/icons</item>
+        <item name="elevation">4dp</item>
+    </style>
 
     <style name="AppTheme.TextViewHeader">
         <item name="android:layout_width">match_parent</item>

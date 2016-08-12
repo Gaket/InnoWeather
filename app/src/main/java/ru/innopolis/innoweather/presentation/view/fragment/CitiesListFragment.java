@@ -2,6 +2,7 @@ package ru.innopolis.innoweather.presentation.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -40,10 +41,10 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     @Inject
     CitiesAdapter citiesAdapter;
 
-    @BindView(R.id.rv_users)
-    RecyclerView rv_users;
+    @BindView(R.id.rv_cities)
+    RecyclerView rvUsers;
     @BindView(R.id.rl_progress)
-    RelativeLayout rl_progress;
+    RelativeLayout rlProgress;
 
     private CitiesAdapter.OnItemClickListener onItemClickListener = cityModel -> {
         if (citiesListPresenter != null && cityModel != null) {
@@ -99,8 +100,12 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     }
 
     private void setupRecyclerView() {
+        rvUsers.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        rvUsers.setLayoutManager(llm);
+        rvUsers.setAdapter(citiesAdapter);
         citiesAdapter.setOnItemClickListener(onItemClickListener);
-        rv_users.setAdapter(citiesAdapter);
     }
 
     @Override
@@ -128,18 +133,17 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
         if (cityModel != null) {
             cityListListener.onCityClicked(cityModel);
         }
-
     }
 
     @Override
     public void showProgress() {
-        rl_progress.setVisibility(View.VISIBLE);
+        rlProgress.setVisibility(View.VISIBLE);
         getActivity().setProgressBarIndeterminateVisibility(true);
     }
 
     @Override
     public void hideProgress() {
-        rl_progress.setVisibility(View.GONE);
+        rlProgress.setVisibility(View.GONE);
         getActivity().setProgressBarIndeterminateVisibility(false);
 
     }

@@ -38,7 +38,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
 
     @Override
     public CityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = layoutInflater.inflate(R.layout.row_city, parent, false);
+        final View view = layoutInflater.inflate(R.layout.card_layout, parent, false);
         return new CityViewHolder(view);
     }
 
@@ -49,16 +49,12 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         if (cityModel.getTemp() != null) {
             holder.tvTemp.setText(cityModel.getTemp().toString());
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null) {
-                    onItemClickListener.onCityItemClicked(cityModel);
-                }
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onCityItemClicked(cityModel);
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -75,13 +71,11 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         notifyDataSetChanged();
     }
 
-
     private void validateCitiesCollection(Collection<CityModel> citiesList) {
         if (citiesList == null) {
             throw new IllegalArgumentException("The list cannot be null");
         }
     }
-
 
     public class CityViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_cities_name)

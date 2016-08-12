@@ -1,12 +1,9 @@
 package ru.innopolis.innoweather.presentation.view.activity;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 
 import javax.inject.Inject;
 
@@ -28,10 +25,12 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
     Toolbar toolbar;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-    private UserComponent mUserComponent;
 
     @Inject
     CitiesListPresenter citiesListPresenter;
+
+    private UserComponent mUserComponent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,21 +67,11 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
     public void onUpdateClicked() {
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_cities_list, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
 
     @OnClick(R.id.fab)
     public void onClick() {
-
         FragmentManager manager = getSupportFragmentManager();
         CityPickerDialogFragment cityPickerDialogFragment = new CityPickerDialogFragment();
         cityPickerDialogFragment.show(manager, "dialog");
-
-
-        }
+    }
 }
