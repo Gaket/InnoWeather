@@ -30,7 +30,7 @@ public class CityDataRepository implements CityRepository {
     }
 
     @Override
-    public Observable<City> cities() {
+    public Observable<City> getActiveCities() {
         return cityDataStore.cities()
                 .map(cityEntities -> cityEntityDataMapper.transform(cityEntities));
     }

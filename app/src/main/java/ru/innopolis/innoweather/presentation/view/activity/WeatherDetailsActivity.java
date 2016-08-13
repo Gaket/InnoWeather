@@ -17,13 +17,7 @@ import ru.innopolis.innoweather.presentation.view.fragment.WeatherDetailsFragmen
 public class WeatherDetailsActivity extends BaseActivity implements HasComponent<UserComponent> {
 
     private static final String INTENT_EXTRA_PARAM_CITY_ID = "RU.INNO_WEATHER.INTENT_PARAM_CITY_ID";
-    private static final String INSTANCE_STATE_PARAM_USER_ID = "org.android10.STATE_PARAM_USER_ID";
-
-    public static Intent getCallingIntent(Context context, int cityId) {
-        Intent callingIntent = new Intent(context, WeatherDetailsActivity.class);
-        callingIntent.putExtra(INTENT_EXTRA_PARAM_CITY_ID, cityId);
-        return callingIntent;
-    }
+    private static final String INSTANCE_STATE_PARAM_CITY_ID = "RU.INNO_WEATHER.STATE_PARAM_USER_ID";
 
     private int mCityId;
     private UserComponent mUserComponent;
@@ -35,7 +29,6 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_layout);
-        // TODO: look at what requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); is
         initializeActivity(savedInstanceState);
         initializeInjector();
     }
@@ -46,33 +39,40 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
             ButterKnife.bind(this);
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            this.mCityId = getIntent().getIntExtra(INTENT_EXTRA_PARAM_CITY_ID, -1);
+            mCityId = getIntent().getIntExtra(INTENT_EXTRA_PARAM_CITY_ID, -1);
             addFragment(R.id.fragmentContainer, new WeatherDetailsFragment());
         } else {
-            this.mCityId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_USER_ID);
+            mCityId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_CITY_ID);
         }
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (outState != null) {
-            outState.putInt(INSTANCE_STATE_PARAM_USER_ID, this.mCityId);
+            outState.putInt(INSTANCE_STATE_PARAM_CITY_ID, mCityId);
         }
         super.onSaveInstanceState(outState);
     }
 
 
     private void initializeInjector() {
-        this.mUserComponent = DaggerUserComponent.builder()
+        mUserComponent = DaggerUserComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .userModule(new UserModule(this.mCityId))
+                .userModule(new UserModule(mCityId))
                 .build();
     }
 
     @Override
     public UserComponent getComponent() {
         return mUserComponent;
+    }
+
+    public static Intent getCallingIntent(Context context, int cityId) {
+        Intent callingIntent = new Intent(context, WeatherDetailsActivity.class);
+        callingIntent.putExtra(INTENT_EXTRA_PARAM_CITY_ID, cityId);
+        return callingIntent;
     }
 
 }

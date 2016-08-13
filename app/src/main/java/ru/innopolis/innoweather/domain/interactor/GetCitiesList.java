@@ -25,6 +25,6 @@ public class GetCitiesList extends UseCase {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return mCityRepository.cities();
+        return mCityRepository.getActiveCities();
     }
 }

@@ -6,9 +6,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 

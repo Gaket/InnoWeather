@@ -137,11 +137,6 @@ public class CitiesListPresenter implements Presenter {
         });
     }
 
-    private void showTemperatureInCity(City city) {
-
-
-    }
-
     public void addNewCity() {
 
     }

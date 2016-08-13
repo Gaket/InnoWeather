@@ -15,9 +15,10 @@ import ru.innopolis.innoweather.presentation.di.HasComponent;
 import ru.innopolis.innoweather.presentation.di.components.DaggerUserComponent;
 import ru.innopolis.innoweather.presentation.di.components.UserComponent;
 import ru.innopolis.innoweather.presentation.model.CityModel;
+import ru.innopolis.innoweather.presentation.presenter.AddNewCityPresenter;
 import ru.innopolis.innoweather.presentation.presenter.CitiesListPresenter;
 import ru.innopolis.innoweather.presentation.view.fragment.CitiesListFragment;
-import ru.innopolis.innoweather.presentation.view.fragment.CityPickerDialogFragment;
+import ru.innopolis.innoweather.presentation.view.fragment.AddNewCityDialogFragment;
 
 public class CitiesListActivity extends BaseActivity implements HasComponent<UserComponent>, CitiesListFragment.CityListListener {
 
@@ -28,7 +29,6 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
 
     @Inject
     CitiesListPresenter citiesListPresenter;
-
     private UserComponent mUserComponent;
 
 
@@ -71,7 +71,7 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
     @OnClick(R.id.fab)
     public void onClick() {
         FragmentManager manager = getSupportFragmentManager();
-        CityPickerDialogFragment cityPickerDialogFragment = new CityPickerDialogFragment();
-        cityPickerDialogFragment.show(manager, "dialog");
+        AddNewCityDialogFragment addNewCityDialogFragment = new AddNewCityDialogFragment();
+        addNewCityDialogFragment.show(manager, "dialog");
     }
 }

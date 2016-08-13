@@ -22,6 +22,7 @@ import ru.innopolis.innoweather.presentation.presenter.WeatherDetailsPresenter;
 import ru.innopolis.innoweather.presentation.view.WeatherDetailsView;
 
 public class WeatherDetailsFragment extends BaseFragment implements WeatherDetailsView {
+    private static final String INSTANCE_STATE__PARAM_WEATHER = "RU.INNO_WEATHER.STATE_PARAM_WEATHER";
 
     @Inject
     WeatherDetailsPresenter weatherDetailsPresenter;
@@ -32,9 +33,10 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     TextView tvCloudiness;
     @BindView(R.id.rl_progress)
     RelativeLayout rlProgress;
-    private Unbinder unbinder;
+    private Unbinder mUnbinder;
 
     public WeatherDetailsFragment() {
+        setRetainInstance(true);
     }
 
     @Override
@@ -47,7 +49,7 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather_details, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        mUnbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -56,7 +58,15 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
         super.onViewCreated(view, savedInstanceState);
         weatherDetailsPresenter.setView(this);
         if (savedInstanceState == null) {
-            this.loadWeatherDetails();
+            loadWeatherDetails();
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            weatherDetailsPresenter.initialize();
         }
     }
 
@@ -70,7 +80,7 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     @Override
     public void onResume() {
         super.onResume();
-        this.weatherDetailsPresenter.resume();
+        weatherDetailsPresenter.resume();
     }
 
     @Override
@@ -82,13 +92,13 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        mUnbinder.unbind();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.weatherDetailsPresenter.destroy();
+        weatherDetailsPresenter.destroy();
     }
 
     @Override

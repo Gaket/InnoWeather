@@ -10,5 +10,5 @@ import rx.Observable;
  */
 public interface CityRepository {
 
-    Observable<City> cities();
+    Observable<City> getActiveCities();
 }

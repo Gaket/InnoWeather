@@ -18,20 +18,20 @@ import rx.Subscriber;
 public class WeatherDetailsPresenter implements Presenter {
     private static String TAG = "WeatherDetailsPresenter";
 
-    private WeatherDetailsView mViewDetailsView;
+    private WeatherDetailsView viewDetailsView;
 
-    private final UseCase mWeatherDetailsUseCase;
-    private final WeatherModelDataMapper mWeatherModelDataMapper;
+    private final UseCase weatherDetailsUseCase;
+    private final WeatherModelDataMapper weatherModelDataMapper;
 
     @Inject
     public WeatherDetailsPresenter(@Named("weatherDetails") UseCase weatherDetailsUseCase,
                                    WeatherModelDataMapper weatherModelDataMapper) {
-        this.mWeatherDetailsUseCase = weatherDetailsUseCase;
-        this.mWeatherModelDataMapper = weatherModelDataMapper;
+        this.weatherDetailsUseCase = weatherDetailsUseCase;
+        this.weatherModelDataMapper = weatherModelDataMapper;
     }
 
     public void setView(@NonNull WeatherDetailsView view) {
-        this.mViewDetailsView = view;
+        this.viewDetailsView = view;
     }
 
     @Override
@@ -44,8 +44,8 @@ public class WeatherDetailsPresenter implements Presenter {
 
     @Override
     public void destroy() {
-        mWeatherDetailsUseCase.unsubscribe();
-        mViewDetailsView = null;
+        weatherDetailsUseCase.unsubscribe();
+        viewDetailsView = null;
     }
 
     /**
@@ -64,23 +64,23 @@ public class WeatherDetailsPresenter implements Presenter {
     }
 
     private void showProgressView() {
-        mViewDetailsView.showProgress();
+        viewDetailsView.showProgress();
     }
 
     private void hideProgressView() {
-        mViewDetailsView.hideProgress();
+        viewDetailsView.hideProgress();
     }
 
     private void showWeatherDetailsInView(Weather weather) {
-        final WeatherModel weatherModel = mWeatherModelDataMapper.transform(weather);
-        this.mViewDetailsView.renderWeatherDetails(weatherModel);
+        final WeatherModel weatherModel = weatherModelDataMapper.transform(weather);
+        this.viewDetailsView.renderWeatherDetails(weatherModel);
     }
 
     /**
      * Gets weather details and shows them in view
      */
     private void getWeatherDetails() {
-        mWeatherDetailsUseCase.execute(new Subscriber<Weather>() {
+        weatherDetailsUseCase.execute(new Subscriber<Weather>() {
             @Override
             public void onCompleted() {
                 hideProgressView();
