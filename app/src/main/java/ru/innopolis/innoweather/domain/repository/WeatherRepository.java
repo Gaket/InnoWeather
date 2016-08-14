@@ -8,5 +8,5 @@ import rx.Observable;
  */
 public interface WeatherRepository {
 
-    Observable<Weather> weather(int cityId, String units);
+    Observable<Weather> getWeather(int cityId, String units);
 }

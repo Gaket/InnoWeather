@@ -19,8 +19,8 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
     private static final String INTENT_EXTRA_PARAM_CITY_ID = "RU.INNO_WEATHER.INTENT_PARAM_CITY_ID";
     private static final String INSTANCE_STATE_PARAM_CITY_ID = "RU.INNO_WEATHER.STATE_PARAM_USER_ID";
 
-    private int mCityId;
-    private UserComponent mUserComponent;
+    private int cityId;
+    private UserComponent userComponent;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -39,10 +39,10 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
             ButterKnife.bind(this);
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mCityId = getIntent().getIntExtra(INTENT_EXTRA_PARAM_CITY_ID, -1);
+            cityId = getIntent().getIntExtra(INTENT_EXTRA_PARAM_CITY_ID, -1);
             addFragment(R.id.fragmentContainer, new WeatherDetailsFragment());
         } else {
-            mCityId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_CITY_ID);
+            cityId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_CITY_ID);
         }
     }
 
@@ -50,23 +50,23 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (outState != null) {
-            outState.putInt(INSTANCE_STATE_PARAM_CITY_ID, mCityId);
+            outState.putInt(INSTANCE_STATE_PARAM_CITY_ID, cityId);
         }
         super.onSaveInstanceState(outState);
     }
 
 
     private void initializeInjector() {
-        mUserComponent = DaggerUserComponent.builder()
+        userComponent = DaggerUserComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .userModule(new UserModule(mCityId))
+                .userModule(new UserModule(cityId))
                 .build();
     }
 
     @Override
     public UserComponent getComponent() {
-        return mUserComponent;
+        return userComponent;
     }
 
     public static Intent getCallingIntent(Context context, int cityId) {

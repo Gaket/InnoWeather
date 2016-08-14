@@ -11,4 +11,6 @@ public interface CityDataStore {
     Observable<CityEntity> getAllCities();
 
     Observable<Boolean> addCity(City city);
+
+    Observable<Boolean> initializeCities();
 }

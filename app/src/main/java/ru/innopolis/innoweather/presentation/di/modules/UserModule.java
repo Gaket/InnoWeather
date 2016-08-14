@@ -25,6 +25,7 @@ import ru.innopolis.innoweather.domain.executor.PostExecutionThread;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
 import ru.innopolis.innoweather.domain.interactor.GetCitiesList;
 import ru.innopolis.innoweather.domain.interactor.GetWeatherDetails;
+import ru.innopolis.innoweather.domain.interactor.InitializeCitiesLists;
 import ru.innopolis.innoweather.domain.interactor.UseCase;
 import ru.innopolis.innoweather.domain.repository.CityRepository;
 import ru.innopolis.innoweather.domain.repository.WeatherRepository;
@@ -62,5 +63,15 @@ public class UserModule {
             CityRepository citiesRepository, ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread) {
         return new GetCitiesList(citiesRepository, threadExecutor, postExecutionThread);
+    }
+
+
+    @Provides
+    @PerActivity
+    @Named("initializeCitiesList")
+    UseCase provideInitializeCitiesListUseCase(
+            CityRepository citiesRepository, ThreadExecutor threadExecutor,
+            PostExecutionThread postExecutionThread) {
+        return new InitializeCitiesLists(citiesRepository, threadExecutor, postExecutionThread);
     }
 }

@@ -40,5 +40,11 @@ public class CityDataRepository implements CityRepository {
         return cityDataStore.addCity(city);
     }
 
+    @Override
+    public Observable<Boolean> initializeCities() {
+        CityDataStore cityDataStore = factory.createLocalDataStore();
+        return cityDataStore.initializeCities();
+    }
+
 
 }

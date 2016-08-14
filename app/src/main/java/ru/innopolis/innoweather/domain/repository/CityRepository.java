@@ -15,4 +15,6 @@ public interface CityRepository {
 
     Observable<Boolean> addNewCity(City city);
 
+    Observable<Boolean> initializeCities();
+
 }

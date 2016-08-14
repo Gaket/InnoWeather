@@ -30,7 +30,7 @@ public class GetWeatherDetails extends UseCase {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return weatherRepository.weather(cityId, units.name());
+        return weatherRepository.getWeather(cityId, units.name());
     }
 
     public int getCityId() {

@@ -75,7 +75,5 @@ public class AddNewCityPresenter implements Presenter {
         cityModel.setName(city.getString(1));
         cityModel.setCountry(city.getString(2));
 
-
-
     }
 }

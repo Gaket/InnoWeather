@@ -35,7 +35,7 @@ public class GetWeatherDetailsTest {
     public void testGetUserDetailsUseCaseObservableHappyCase() {
         getWeatherDetails.buildUseCaseObservable();
 
-        verify(mockWeatherRepository).weather(FAKE_CITY_ID, UnitsEntity.metric.name());
+        verify(mockWeatherRepository).getWeather(FAKE_CITY_ID, UnitsEntity.metric.name());
         verifyNoMoreInteractions(mockWeatherRepository);
         verifyZeroInteractions(mockPostExecutionThread);
         verifyZeroInteractions(mockThreadExecutor);

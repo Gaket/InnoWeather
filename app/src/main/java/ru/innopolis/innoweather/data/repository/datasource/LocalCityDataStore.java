@@ -40,6 +40,22 @@ public class LocalCityDataStore implements CityDataStore {
         return cityCache.getAll();
     }
 
+
+
+
+    public Observable<Boolean> addCity(City city) {
+        return Observable.just(Boolean.TRUE);
+    }
+
+    @Override
+    public Observable<Boolean> initializeCities() {
+        List<CityEntity> entities = getCityEntities(new StringReader(initialData));
+        for (CityEntity entity : entities) {
+            cityCache.put(entity);
+        }
+        return Observable.just(true);
+    }
+
     private List<CityEntity> getCityEntities(Reader reader) {
         Gson gson = new Gson();
         Type collectionType = new TypeToken<Collection<CityEntity>>() {
@@ -48,11 +64,8 @@ public class LocalCityDataStore implements CityDataStore {
     }
 
     private static final String initialData = "[" +
-            "{id:743615,name:Kazan,country:TR}, " +
+            "{id:1508291,name:Chelyabinsk,country:RU}," +
+            "{id:551487,name:Kazan,country:RU}," +
             "{id:524901,name:Moscow,country:RU}" +
             "]";
-
-    public Observable<Boolean> addCity(City city) {
-        return Observable.just(Boolean.TRUE);
-    }
 }

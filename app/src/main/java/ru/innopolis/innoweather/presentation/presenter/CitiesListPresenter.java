@@ -1,5 +1,7 @@
 package ru.innopolis.innoweather.presentation.presenter;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -16,6 +18,7 @@ import ru.innopolis.innoweather.domain.interactor.UseCase;
 import ru.innopolis.innoweather.presentation.di.PerActivity;
 import ru.innopolis.innoweather.presentation.mapper.CityModelDataMapper;
 import ru.innopolis.innoweather.presentation.model.CityModel;
+import ru.innopolis.innoweather.presentation.model.Settings;
 import ru.innopolis.innoweather.presentation.view.CitiesListView;
 import rx.Subscriber;
 
@@ -26,8 +29,10 @@ public class CitiesListPresenter implements Presenter {
     private CitiesListView citiesListView;
 
     private final UseCase getCitiesUseCase;
+    private final UseCase initializeCitiesList;
     private final GetWeatherDetails getWeatherDetails;
     private final CityModelDataMapper cityModelDataMapper;
+    private final Settings settings;
 
     private Collection<City> citiesCollection = new ArrayList<>();
     private Collection<Weather> weatherCollection = new ArrayList<>();
@@ -35,9 +40,12 @@ public class CitiesListPresenter implements Presenter {
     @Inject
     public CitiesListPresenter(@Named("citiesList") UseCase getCitiesUseCase,
                                @Named("weatherDetails") UseCase getWeatherDetails,
-                               CityModelDataMapper cityModelDataMapper) {
+                               @Named("initializeCitiesList") UseCase initializeCitiesList,
+                               CityModelDataMapper cityModelDataMapper, Settings settings) {
         this.getCitiesUseCase = getCitiesUseCase;
         this.cityModelDataMapper = cityModelDataMapper;
+        this.initializeCitiesList = initializeCitiesList;
+        this.settings = settings;
         this.getWeatherDetails = (GetWeatherDetails) getWeatherDetails;
     }
 
@@ -63,7 +71,29 @@ public class CitiesListPresenter implements Presenter {
      * Initializes the presenter by start retrieving cities list
      */
     public void initialize() {
-        this.loadCitiesList();
+        if (isFirstStart()) {
+            initializeCitiesList.execute(new Subscriber() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(Object o) {
+
+                }
+            });
+        }
+        loadCitiesList();
+    }
+
+    private boolean isFirstStart() {
+        return settings.isFirstStart();
     }
 
     /**
