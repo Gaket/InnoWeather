@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.CompletionInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 
@@ -22,11 +23,14 @@ import butterknife.ButterKnife;
 import ru.innopolis.innoweather.R;
 import ru.innopolis.innoweather.presentation.di.HasComponent;
 import ru.innopolis.innoweather.presentation.di.components.UserComponent;
+import ru.innopolis.innoweather.presentation.model.CitiesTableModel;
 import ru.innopolis.innoweather.presentation.presenter.AddNewCityPresenter;
 import ru.innopolis.innoweather.presentation.view.AddNewCityView;
 
 public class AddNewCityDialogFragment extends DialogFragment implements AddNewCityView {
     private static final String TAG = "CityPickerDialog";
+
+    private Cursor selectedCity;
 
     @Inject
     AddNewCityPresenter addNewCityPresenter;
@@ -56,6 +60,7 @@ public class AddNewCityDialogFragment extends DialogFragment implements AddNewCi
             dialog.dismiss();
         });
         builder.setPositiveButton(getString(R.string.dialog_add_city), (DialogInterface dialog, int which) -> {
+            addNewCityPresenter.addCity(selectedCity);
             dialog.dismiss();
         });
 
@@ -93,18 +98,18 @@ public class AddNewCityDialogFragment extends DialogFragment implements AddNewCi
         // instead of higher level abstraction
         CursorAdapter adapter = addNewCityPresenter.createAdapter(getContext());
         actvCitiesPicker.setAdapter(adapter);
-        actvCitiesPicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Cursor city = (Cursor) parent.getSelectedItem();
-                addNewCityPresenter.addCity(city);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+        actvCitiesPicker.onCommitCompletion(new CompletionInfo(1,1,"d"));
 
+        actvCitiesPicker.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor city = (Cursor) adapter.getItem(position);
+                selectedCity = city;
+                actvCitiesPicker.setText(city.getString(CitiesTableModel.name.ordinal()));
             }
         });
+
         return rootView;
     }
 
