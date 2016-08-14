@@ -11,7 +11,7 @@ import rx.Observable;
 
 /**
  * This class is an implementation of {@link UseCase} that represents a use case for
- * retrieving data related to an specific {@link Weather}.
+ * retrieving data related to a specific {@link Weather}.
  */
 public class GetWeatherDetails extends UseCase {
 

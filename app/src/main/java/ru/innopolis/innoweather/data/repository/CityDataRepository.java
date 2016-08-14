@@ -1,14 +1,11 @@
 package ru.innopolis.innoweather.data.repository;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import ru.innopolis.innoweather.data.entity.mapper.CityEntityDataMapper;
 import ru.innopolis.innoweather.data.repository.datasource.CityDataStore;
-import ru.innopolis.innoweather.data.repository.datasource.CloudWeatherDataStore;
-import ru.innopolis.innoweather.data.repository.datasource.LocalCityDataStore;
+import ru.innopolis.innoweather.data.repository.datasource.CityDataStoreFactory;
 import ru.innopolis.innoweather.domain.City;
 import ru.innopolis.innoweather.domain.repository.CityRepository;
 import rx.Observable;
@@ -20,18 +17,28 @@ import rx.Observable;
 public class CityDataRepository implements CityRepository {
     private static final String TAG = "CityDataRepository";
 
-    private final LocalCityDataStore cityDataStore;
+    private final CityDataStoreFactory factory;
     private final CityEntityDataMapper cityEntityDataMapper;
 
     @Inject
-    public CityDataRepository(LocalCityDataStore cityDataStore, CityEntityDataMapper cityEntityDataMapper) {
-        this.cityDataStore = cityDataStore;
+    public CityDataRepository(CityDataStoreFactory factory, CityEntityDataMapper cityEntityDataMapper) {
+        this.factory = factory;
         this.cityEntityDataMapper = cityEntityDataMapper;
     }
 
     @Override
     public Observable<City> getActiveCities() {
-        return cityDataStore.cities()
+        // At the moment, we work only with local data store
+        CityDataStore cityDataStore = factory.createLocalDataStore();
+        return cityDataStore.getAllCities()
                 .map(cityEntities -> cityEntityDataMapper.transform(cityEntities));
     }
+
+    @Override
+    public Observable<Boolean> addNewCity(City city) {
+        CityDataStore cityDataStore = factory.createLocalDataStore();
+        return cityDataStore.addCity(city);
+    }
+
+
 }

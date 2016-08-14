@@ -2,6 +2,7 @@ package ru.innopolis.innoweather.domain.repository;
 
 import java.util.List;
 
+import ru.innopolis.innoweather.data.entity.CityEntity;
 import ru.innopolis.innoweather.domain.City;
 import rx.Observable;
 
@@ -11,4 +12,7 @@ import rx.Observable;
 public interface CityRepository {
 
     Observable<City> getActiveCities();
+
+    Observable<Boolean> addNewCity(City city);
+
 }

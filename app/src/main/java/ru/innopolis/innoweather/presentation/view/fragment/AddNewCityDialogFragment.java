@@ -2,6 +2,7 @@ package ru.innopolis.innoweather.presentation.view.fragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 
 import javax.inject.Inject;
@@ -91,6 +93,18 @@ public class AddNewCityDialogFragment extends DialogFragment implements AddNewCi
         // instead of higher level abstraction
         CursorAdapter adapter = addNewCityPresenter.createAdapter(getContext());
         actvCitiesPicker.setAdapter(adapter);
+        actvCitiesPicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Cursor city = (Cursor) parent.getSelectedItem();
+                addNewCityPresenter.addCity(city);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         return rootView;
     }
 

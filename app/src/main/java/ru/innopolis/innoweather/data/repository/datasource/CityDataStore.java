@@ -1,10 +1,14 @@
 package ru.innopolis.innoweather.data.repository.datasource;
 
-import java.util.List;
-
 import ru.innopolis.innoweather.data.entity.CityEntity;
+import ru.innopolis.innoweather.domain.City;
 import rx.Observable;
 
 public interface CityDataStore {
-    Observable<CityEntity> cities();
+
+    Observable<CityEntity> getCity(int cityId);
+
+    Observable<CityEntity> getAllCities();
+
+    Observable<Boolean> addCity(City city);
 }

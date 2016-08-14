@@ -10,6 +10,7 @@ import android.widget.FilterQueryProvider;
 import javax.inject.Inject;
 
 import ru.innopolis.innoweather.data.init.CitiesDb;
+import ru.innopolis.innoweather.presentation.model.CityModel;
 import ru.innopolis.innoweather.presentation.view.AddNewCityView;
 
 public class AddNewCityPresenter implements Presenter {
@@ -67,5 +68,14 @@ public class AddNewCityPresenter implements Presenter {
             }
         });
         return adapter;
+    }
+
+    public void addCity(Cursor city) {
+        CityModel cityModel = new CityModel(city.getInt(0));
+        cityModel.setName(city.getString(1));
+        cityModel.setCountry(city.getString(2));
+
+
+
     }
 }
