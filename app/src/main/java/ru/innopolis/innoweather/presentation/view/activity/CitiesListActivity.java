@@ -62,8 +62,8 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
 
     @Override
     public void onUpdateClicked() {
+        // TODO: implement
     }
-
 
     @OnClick(R.id.fab)
     public void onClick() {

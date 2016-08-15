@@ -9,9 +9,7 @@
         />
     <TextView
         android:id="@+id/tv_temp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:freezesText="true"
+        style="@style/AppTheme.TextViewSimpleText"
         />
     <TextView
         style="@style/AppTheme.TextViewTitle"
@@ -19,9 +17,23 @@
         />
     <TextView
         android:id="@+id/tv_cloudiness"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:freezesText="true"
+        style="@style/AppTheme.TextViewSimpleText"
+        />
+    <TextView
+        style="@style/AppTheme.TextViewTitle"
+        android:text="@string/view_text_humidity"
+        />
+    <TextView
+        android:id="@+id/tv_humidity"
+        style="@style/AppTheme.TextViewSimpleText"
+        />
+    <TextView
+        style="@style/AppTheme.TextViewTitle"
+        android:text="@string/view_text_pressure"
+        />
+    <TextView
+        android:id="@+id/tv_pressure"
+        style="@style/AppTheme.TextViewSimpleText"
         />
 
 </LinearLayout>

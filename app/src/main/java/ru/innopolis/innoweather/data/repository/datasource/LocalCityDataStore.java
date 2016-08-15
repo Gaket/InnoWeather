@@ -54,8 +54,12 @@ public class LocalCityDataStore implements CityDataStore {
     }
 
     private static final String initialData = "[" +
-            "{id:1508291,name:Chelyabinsk,country:RU}," +
+            "{id:524901,name:Moscow,country:RU}," +
             "{id:551487,name:Kazan,country:RU}," +
-            "{id:524901,name:Moscow,country:RU}" +
+            "{id:479561,name:Ufa,country:RU}," +
+            "{id:1508291,name:Chelyabinsk,country:RU}," +
+            "{id:554234,name:Kaliningrad,country:RU}," +
+            "{id:491422,name:Sochi,country:RU}," +
+            "{id:1496747,name:Novosibirsk,country:RU}" +
             "]";
 }

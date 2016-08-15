@@ -36,14 +36,14 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
 
     private void initializeActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            ButterKnife.bind(this);
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             cityId = getIntent().getIntExtra(INTENT_EXTRA_PARAM_CITY_ID, -1);
             addFragment(R.id.fragmentContainer, new WeatherDetailsFragment(), getString(R.string.weather_tag));
         } else {
             cityId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_CITY_ID);
         }
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 

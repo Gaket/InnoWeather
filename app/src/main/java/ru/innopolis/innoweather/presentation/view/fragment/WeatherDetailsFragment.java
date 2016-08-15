@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -33,7 +35,11 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     TextView tvCloudiness;
     @BindView(R.id.rl_progress)
     RelativeLayout rlProgress;
-    private Unbinder mUnbinder;
+    @BindView(R.id.tv_humidity)
+    TextView tvHumidity;
+    @BindView(R.id.tv_pressure)
+    TextView tvPressure;
+    private Unbinder unbinder;
 
     public WeatherDetailsFragment() {
         setRetainInstance(true);
@@ -49,7 +55,7 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather_details, container, false);
-        mUnbinder = ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -92,7 +98,7 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUnbinder.unbind();
+        unbinder.unbind();
     }
 
     @Override
@@ -104,8 +110,13 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     @Override
     public void renderWeatherDetails(WeatherModel weather) {
         if (weather != null) {
-            tvTemp.setText(weather.getTemp().toString());
+            String temp = String.format(Locale.US, "%d°С", weather.getTemp().intValue());
+            tvTemp.setText(temp);
             tvCloudiness.setText(weather.getCloudiness());
+            String humidity = String.format(Locale.US, "%d%%", weather.getHumidity().intValue());
+            tvHumidity.setText(humidity);
+            String pressure = String.format(Locale.US, "%d mbar", weather.getPressure().intValue());
+            tvPressure.setText(pressure);
         }
     }
 
@@ -142,6 +153,4 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
             weatherDetailsPresenter.initialize();
         }
     }
-
-
 }

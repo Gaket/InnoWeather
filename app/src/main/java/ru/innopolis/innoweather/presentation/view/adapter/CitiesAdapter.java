@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -47,7 +48,8 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         final CityModel cityModel = ((List<CityModel>) citiesCollection).get(position);
         holder.tvName.setText(cityModel.getName());
         if (cityModel.getTemp() != null) {
-            holder.tvTemp.setText(cityModel.getTemp().toString());
+            String temp = String.format(Locale.US, "%d°С", cityModel.getTemp().intValue());
+            holder.tvTemp.setText(temp);
         }
         holder.itemView.setOnClickListener(v -> {
             if (onItemClickListener != null) {
