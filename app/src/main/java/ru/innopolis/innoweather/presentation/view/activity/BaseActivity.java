@@ -34,11 +34,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
-
-    protected void addFragment(int containerViewId, Fragment fragment) {
+    protected void addFragment(int containerViewId, Fragment fragment, String tag) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(containerViewId, fragment);
+        fragmentTransaction.add(containerViewId, fragment, tag);
         fragmentTransaction.commit();
     }
 

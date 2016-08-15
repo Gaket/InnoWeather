@@ -10,6 +10,13 @@ public class CityEntity {
     private String country;
     private Coordinates coordinates;
 
+    public CityEntity() {
+    }
+
+    public CityEntity(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

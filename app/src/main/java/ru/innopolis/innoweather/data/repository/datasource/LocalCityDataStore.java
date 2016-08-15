@@ -1,24 +1,16 @@
 package ru.innopolis.innoweather.data.repository.datasource;
 
-
-import android.content.Context;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import ru.innopolis.innoweather.data.cache.CityCache;
 import ru.innopolis.innoweather.data.entity.CityEntity;
-import ru.innopolis.innoweather.domain.City;
 import rx.Observable;
 
 public class LocalCityDataStore implements CityDataStore {
@@ -40,10 +32,8 @@ public class LocalCityDataStore implements CityDataStore {
         return cityCache.getAll();
     }
 
-
-
-
-    public Observable<Boolean> addCity(City city) {
+    public Observable<Boolean> addCity(CityEntity cityEntity) {
+        cityCache.put(cityEntity);
         return Observable.just(Boolean.TRUE);
     }
 

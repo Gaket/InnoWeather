@@ -23,6 +23,7 @@ import dagger.Provides;
 import ru.innopolis.innoweather.data.entity.UnitsEntity;
 import ru.innopolis.innoweather.domain.executor.PostExecutionThread;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
+import ru.innopolis.innoweather.domain.interactor.AddNewCity;
 import ru.innopolis.innoweather.domain.interactor.GetCitiesList;
 import ru.innopolis.innoweather.domain.interactor.GetWeatherDetails;
 import ru.innopolis.innoweather.domain.interactor.InitializeCitiesLists;
@@ -74,4 +75,15 @@ public class UserModule {
             PostExecutionThread postExecutionThread) {
         return new InitializeCitiesLists(citiesRepository, threadExecutor, postExecutionThread);
     }
+
+
+    @Provides
+    @PerActivity
+    @Named("addNewCity")
+    UseCase provideAddNewCityUseCase(
+            CityRepository citiesRepository, ThreadExecutor threadExecutor,
+            PostExecutionThread postExecutionThread) {
+        return new AddNewCity(citiesRepository, threadExecutor, postExecutionThread);
+    }
+
 }

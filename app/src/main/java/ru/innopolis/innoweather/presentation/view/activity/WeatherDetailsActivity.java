@@ -40,7 +40,7 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             cityId = getIntent().getIntExtra(INTENT_EXTRA_PARAM_CITY_ID, -1);
-            addFragment(R.id.fragmentContainer, new WeatherDetailsFragment());
+            addFragment(R.id.fragmentContainer, new WeatherDetailsFragment(), getString(R.string.weather_tag));
         } else {
             cityId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_CITY_ID);
         }
@@ -54,7 +54,6 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
         }
         super.onSaveInstanceState(outState);
     }
-
 
     private void initializeInjector() {
         userComponent = DaggerUserComponent.builder()

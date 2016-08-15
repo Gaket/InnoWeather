@@ -15,10 +15,8 @@ import ru.innopolis.innoweather.presentation.di.HasComponent;
 import ru.innopolis.innoweather.presentation.di.components.DaggerUserComponent;
 import ru.innopolis.innoweather.presentation.di.components.UserComponent;
 import ru.innopolis.innoweather.presentation.model.CityModel;
-import ru.innopolis.innoweather.presentation.presenter.AddNewCityPresenter;
 import ru.innopolis.innoweather.presentation.presenter.CitiesListPresenter;
 import ru.innopolis.innoweather.presentation.view.fragment.CitiesListFragment;
-import ru.innopolis.innoweather.presentation.view.fragment.AddNewCityDialogFragment;
 
 public class CitiesListActivity extends BaseActivity implements HasComponent<UserComponent>, CitiesListFragment.CityListListener {
 
@@ -29,8 +27,7 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
 
     @Inject
     CitiesListPresenter citiesListPresenter;
-    private UserComponent mUserComponent;
-
+    private UserComponent userComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +36,15 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        initializeInjector();
         if (savedInstanceState == null) {
-            addFragment(R.id.fragmentContainer, new CitiesListFragment());
+            addFragment(R.id.fragmentContainer, new CitiesListFragment(), getString(R.string.cities_tag));
         }
+        initializeInjector();
     }
 
 
     private void initializeInjector() {
-        this.mUserComponent = DaggerUserComponent.builder()
+        userComponent = DaggerUserComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
@@ -55,7 +52,7 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
 
     @Override
     public UserComponent getComponent() {
-        return mUserComponent;
+        return userComponent;
     }
 
     @Override
@@ -70,8 +67,12 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
 
     @OnClick(R.id.fab)
     public void onClick() {
+        // TODO: check out why the presenter is null here
+        // citiesListPresenter.showAddNewCityScreen();
         FragmentManager manager = getSupportFragmentManager();
-        AddNewCityDialogFragment addNewCityDialogFragment = new AddNewCityDialogFragment();
-        addNewCityDialogFragment.show(manager, "dialog");
+        CitiesListFragment fragment = (CitiesListFragment) manager.findFragmentByTag(getString(R.string.cities_tag));
+        fragment.showAddNewCityScreen();
     }
+
+
 }

@@ -1,7 +1,9 @@
 package ru.innopolis.innoweather.presentation.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,6 +35,7 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
      */
     public interface CityListListener {
         void onCityClicked(final CityModel cityModel);
+
         void onUpdateClicked();
     }
 
@@ -87,7 +90,8 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
         return view;
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         citiesListPresenter.setView(this);
         if (savedInstanceState == null) {
@@ -95,7 +99,20 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
         }
     }
 
-    private void loadCitiesList() {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Make sure fragment codes match up
+        if (requestCode == AddNewCityDialogFragment.REQUEST_CODE) {
+            String editTextString = data.getStringExtra(
+                    AddNewCityDialogFragment.EDIT_TEXT_BUNDLE_KEY);
+            if (editTextString.equals("success")) {
+//                citiesAdapter.setCitiesCollection(Collections.emptyList());
+                citiesListPresenter.loadCitiesList();
+            }
+        }
+    }
+
+    public void loadCitiesList() {
         citiesListPresenter.initialize();
     }
 
@@ -124,7 +141,6 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     public void renderCitiesList(Collection<CityModel> cityModels) {
         if (cityModels != null) {
             citiesAdapter.setCitiesCollection(cityModels);
-            citiesAdapter.notifyDataSetChanged();
         }
     }
 
@@ -169,4 +185,11 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void showAddNewCityScreen() {
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        AddNewCityDialogFragment addNewCityDialogFragment = new AddNewCityDialogFragment();
+        addNewCityDialogFragment.setTargetFragment(this, AddNewCityDialogFragment.REQUEST_CODE);
+        addNewCityDialogFragment.show(manager, "dialog");
+    }
 }

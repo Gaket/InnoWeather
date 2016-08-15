@@ -32,6 +32,19 @@ public class CityEntityDataMapper {
         return city;
     }
 
+    public CityEntity transform(City city) {
+        CityEntity cityEntity = null;
+        if (city != null) {
+            cityEntity = new CityEntity(city.getId());
+            cityEntity.setCountry(city.getCountry());
+            cityEntity.setName(city.getName());
+        } else {
+            Log.e(TAG, "transform: problem with downloaded city");
+        }
+        return cityEntity;
+    }
+
+
     public List<City> transform(Collection<CityEntity> CityEntityCollection) {
         List<City> cityList = new ArrayList<>();
         City City;

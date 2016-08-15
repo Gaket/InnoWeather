@@ -5,13 +5,19 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.widget.FilterQueryProvider;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import ru.innopolis.innoweather.data.init.CitiesDb;
+import ru.innopolis.innoweather.domain.interactor.AddNewCity;
+import ru.innopolis.innoweather.domain.interactor.UseCase;
+import ru.innopolis.innoweather.presentation.mapper.CityModelDataMapper;
+import ru.innopolis.innoweather.presentation.model.CitiesTableModel;
 import ru.innopolis.innoweather.presentation.model.CityModel;
-import ru.innopolis.innoweather.presentation.view.AddNewCityView;
+import rx.Subscriber;
 
 public class AddNewCityPresenter implements Presenter {
     private static final String TAG = "AddNewCityPresenter";
@@ -19,15 +25,14 @@ public class AddNewCityPresenter implements Presenter {
     private final static int[] to = new int[]{android.R.id.text1};
     private final static String[] from = new String[]{"name"};
 
-    private AddNewCityView addNewCityView;
+    private final AddNewCity addNewCityUc;
+    private final CityModelDataMapper cityModelDataMapper;
+
 
     @Inject
-    public AddNewCityPresenter() {
-    }
-
-
-    public void setView(@NonNull AddNewCityView view) {
-        this.addNewCityView = view;
+    public AddNewCityPresenter(@Named("addNewCity") UseCase addNewCityUc, CityModelDataMapper cityModelDataMapper) {
+        this.cityModelDataMapper = cityModelDataMapper;
+        this.addNewCityUc = (AddNewCity) addNewCityUc;
     }
 
 
@@ -70,10 +75,32 @@ public class AddNewCityPresenter implements Presenter {
         return adapter;
     }
 
-    public void addCity(Cursor city) {
-        CityModel cityModel = new CityModel(city.getInt(0));
-        cityModel.setName(city.getString(1));
-        cityModel.setCountry(city.getString(2));
+    public void addCity(CityModel cityModel) {
+        addNewCityUc.setCity(cityModelDataMapper.transform(cityModel));
+        addNewCityUc.execute(new Subscriber() {
+            @Override
+            public void onCompleted() {
 
+                Log.d(TAG, "onCompleted: city was successfully saved");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: problem with saving new city", e);
+            }
+
+            @Override
+            public void onNext(Object o) {
+
+            }
+        });
+    }
+
+    @NonNull
+    public CityModel getCityModelFromCursor(Cursor city) {
+        CityModel cityModel = new CityModel(city.getInt(CitiesTableModel.id.ordinal()));
+        cityModel.setName(city.getString(CitiesTableModel.name.ordinal()));
+        cityModel.setCountry("RU");
+        return cityModel;
     }
 }

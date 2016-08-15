@@ -36,7 +36,7 @@ public class CitiesDb extends SQLiteAssetHelper {
 
     public Cursor filter(String partialValue) {
         return mReadableDb.rawQuery("SELECT _id, name FROM cities " +
-                "WHERE name LIKE '%" + partialValue + "%' " +
+                "WHERE name LIKE '" + partialValue + "%' " +
                 "ORDER BY name", null);
 
     }

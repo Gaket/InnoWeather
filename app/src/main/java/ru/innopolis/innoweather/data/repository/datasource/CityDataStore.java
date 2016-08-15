@@ -1,7 +1,6 @@
 package ru.innopolis.innoweather.data.repository.datasource;
 
 import ru.innopolis.innoweather.data.entity.CityEntity;
-import ru.innopolis.innoweather.domain.City;
 import rx.Observable;
 
 public interface CityDataStore {
@@ -10,7 +9,7 @@ public interface CityDataStore {
 
     Observable<CityEntity> getAllCities();
 
-    Observable<Boolean> addCity(City city);
+    Observable<Boolean> addCity(CityEntity city);
 
     Observable<Boolean> initializeCities();
 }

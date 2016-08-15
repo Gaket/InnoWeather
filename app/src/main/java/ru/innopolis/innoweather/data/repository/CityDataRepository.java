@@ -3,6 +3,7 @@ package ru.innopolis.innoweather.data.repository;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ru.innopolis.innoweather.data.entity.CityEntity;
 import ru.innopolis.innoweather.data.entity.mapper.CityEntityDataMapper;
 import ru.innopolis.innoweather.data.repository.datasource.CityDataStore;
 import ru.innopolis.innoweather.data.repository.datasource.CityDataStoreFactory;
@@ -37,7 +38,8 @@ public class CityDataRepository implements CityRepository {
     @Override
     public Observable<Boolean> addNewCity(City city) {
         CityDataStore cityDataStore = factory.createLocalDataStore();
-        return cityDataStore.addCity(city);
+        CityEntity cityEntity = cityEntityDataMapper.transform(city);
+        return cityDataStore.addCity(cityEntity);
     }
 
     @Override

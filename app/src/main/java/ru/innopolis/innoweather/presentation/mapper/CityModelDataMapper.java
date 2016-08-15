@@ -44,6 +44,18 @@ public class CityModelDataMapper {
     }
 
 
+    public City transform(CityModel cityModel) {
+        if (cityModel == null) {
+            throw new IllegalArgumentException("Cannot transform a null value");
+        }
+        City city = new City(cityModel.getId());
+        city.setCountry(cityModel.getCountry());
+        city.setName(cityModel.getName());
+
+        return city;
+    }
+
+
     public Collection<CityModel> transform(Collection<City> citiesCollection) {
         Collection<CityModel> cityModelsCollection;
 

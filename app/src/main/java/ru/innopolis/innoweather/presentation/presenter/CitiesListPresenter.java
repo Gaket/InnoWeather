@@ -1,7 +1,5 @@
 package ru.innopolis.innoweather.presentation.presenter;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -80,7 +78,7 @@ public class CitiesListPresenter implements Presenter {
 
                 @Override
                 public void onError(Throwable e) {
-
+                    Log.e(TAG, "onError: problem on data initialization", e);
                 }
 
                 @Override
@@ -99,10 +97,15 @@ public class CitiesListPresenter implements Presenter {
     /**
      * Loads cities list.
      */
-    private void loadCitiesList() {
+    public void loadCitiesList() {
         showProgressView();
+        citiesCollection.clear();
         getCitiesList();
     }
+
+    private void clearCitiesList() {
+    }
+
 
     private void showProgressView() {
         citiesListView.showProgress();
@@ -126,7 +129,7 @@ public class CitiesListPresenter implements Presenter {
     }
 
     private void getCitiesList() {
-        this.getCitiesUseCase.execute(new Subscriber<City>() {
+        getCitiesUseCase.execute(new Subscriber<City>() {
             @Override
             public void onCompleted() {
                 hideProgressView();

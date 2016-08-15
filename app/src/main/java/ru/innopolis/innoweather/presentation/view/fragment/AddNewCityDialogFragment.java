@@ -2,6 +2,7 @@ package ru.innopolis.innoweather.presentation.view.fragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.CompletionInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 
@@ -24,13 +24,17 @@ import ru.innopolis.innoweather.R;
 import ru.innopolis.innoweather.presentation.di.HasComponent;
 import ru.innopolis.innoweather.presentation.di.components.UserComponent;
 import ru.innopolis.innoweather.presentation.model.CitiesTableModel;
+import ru.innopolis.innoweather.presentation.model.CityModel;
 import ru.innopolis.innoweather.presentation.presenter.AddNewCityPresenter;
 import ru.innopolis.innoweather.presentation.view.AddNewCityView;
 
 public class AddNewCityDialogFragment extends DialogFragment implements AddNewCityView {
     private static final String TAG = "CityPickerDialog";
+    public static final String EDIT_TEXT_BUNDLE_KEY = "add_new_city";
+    public static final int REQUEST_CODE = 142638;
 
-    private Cursor selectedCity;
+
+    private CityModel selectedCity;
 
     @Inject
     AddNewCityPresenter addNewCityPresenter;
@@ -61,12 +65,20 @@ public class AddNewCityDialogFragment extends DialogFragment implements AddNewCi
         });
         builder.setPositiveButton(getString(R.string.dialog_add_city), (DialogInterface dialog, int which) -> {
             addNewCityPresenter.addCity(selectedCity);
+            sendResult(REQUEST_CODE);
             dialog.dismiss();
         });
 
         return builder.create();
     }
 
+
+    private void sendResult(int REQUEST_CODE) {
+        Intent intent = new Intent();
+        intent.putExtra(EDIT_TEXT_BUNDLE_KEY, "success");
+        getTargetFragment().onActivityResult(
+                getTargetRequestCode(), REQUEST_CODE, intent);
+    }
 
 
     @Override
@@ -99,13 +111,11 @@ public class AddNewCityDialogFragment extends DialogFragment implements AddNewCi
         CursorAdapter adapter = addNewCityPresenter.createAdapter(getContext());
         actvCitiesPicker.setAdapter(adapter);
 
-        actvCitiesPicker.onCommitCompletion(new CompletionInfo(1,1,"d"));
-
         actvCitiesPicker.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor city = (Cursor) adapter.getItem(position);
-                selectedCity = city;
+                selectedCity = addNewCityPresenter.getCityModelFromCursor(city);
                 actvCitiesPicker.setText(city.getString(CitiesTableModel.name.ordinal()));
             }
         });

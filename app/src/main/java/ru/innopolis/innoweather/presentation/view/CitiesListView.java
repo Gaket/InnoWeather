@@ -14,6 +14,11 @@ public interface CitiesListView extends LoadDataView {
     void renderCitiesList(Collection<CityModel> cityModels);
 
     /**
+     * Show screen giving possibility to add new city
+     */
+    void showAddNewCityScreen();
+
+    /**
      * Show weather in the given city
      *
      * @param cityModel
