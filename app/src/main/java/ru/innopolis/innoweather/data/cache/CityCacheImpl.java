@@ -71,7 +71,7 @@ public class CityCacheImpl implements CityCache {
     return Observable.create(subscriber -> {
       File cityEntityFile = CityCacheImpl.this.buildFile(cityId);
       String fileContent = CityCacheImpl.this.fileManager.readFileContent(cityEntityFile);
-      CityEntity cityEntity = CityCacheImpl.this.serializer.deserialize(fileContent);
+      CityEntity cityEntity = CityCacheImpl.this.serializer.deserialize(fileContent, CityEntity.class);
 
       if (cityEntity != null) {
         subscriber.onNext(cityEntity);
@@ -88,7 +88,7 @@ public class CityCacheImpl implements CityCache {
     return Observable.create(subscriber -> {
       for(File file : cityEntityFiles) {
         String fileContent = CityCacheImpl.this.fileManager.readFileContent(file);
-        CityEntity cityEntity = CityCacheImpl.this.serializer.deserialize(fileContent);
+        CityEntity cityEntity = CityCacheImpl.this.serializer.deserialize(fileContent, CityEntity.class);
 
         if (cityEntity != null) {
           subscriber.onNext(cityEntity);
