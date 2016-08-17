@@ -63,7 +63,7 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
         userComponent = DaggerUserComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .userModule(new CityModule(cityId))
+                .cityModule(new CityModule(cityId))
                 .build();
     }
 

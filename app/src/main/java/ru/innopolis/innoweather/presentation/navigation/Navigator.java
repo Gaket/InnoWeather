@@ -21,7 +21,6 @@ import android.content.Intent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.innopolis.innoweather.presentation.view.activity.CitiesListActivity;
 import ru.innopolis.innoweather.presentation.view.activity.WeatherDetailsActivity;
 
 /**
@@ -36,7 +35,7 @@ public class Navigator {
   }
 
   /**
-   * Goes to the user details screen.
+   * Goes to the weather details screen.
    *
    * @param context A Context needed to open the destiny activity.
    */
