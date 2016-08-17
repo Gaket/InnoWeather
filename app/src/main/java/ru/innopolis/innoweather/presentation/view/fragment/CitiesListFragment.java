@@ -71,7 +71,7 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof CityListListener) {
-            this.cityListListener = (CityListListener) context;
+            cityListListener = (CityListListener) context;
         }
     }
 
@@ -106,7 +106,6 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
             String editTextString = data.getStringExtra(
                     AddNewCityDialogFragment.EDIT_TEXT_BUNDLE_KEY);
             if (editTextString.equals("success")) {
-//                citiesAdapter.setCitiesCollection(Collections.emptyList());
                 citiesListPresenter.loadCitiesList();
             }
         }
