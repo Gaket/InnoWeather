@@ -36,14 +36,14 @@ import ru.innopolis.innoweather.presentation.di.PerActivity;
  * Dagger module that provides user related collaborators.
  */
 @Module
-public class UserModule {
+public class CityModule {
 
     private int cityId = -1;
 
-    public UserModule() {
+    public CityModule() {
     }
 
-    public UserModule(int cityId) {
+    public CityModule(int cityId) {
         this.cityId = cityId;
     }
 

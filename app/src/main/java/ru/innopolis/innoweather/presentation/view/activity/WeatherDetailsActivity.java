@@ -11,7 +11,7 @@ import ru.innopolis.innoweather.R;
 import ru.innopolis.innoweather.presentation.di.HasComponent;
 import ru.innopolis.innoweather.presentation.di.components.DaggerUserComponent;
 import ru.innopolis.innoweather.presentation.di.components.UserComponent;
-import ru.innopolis.innoweather.presentation.di.modules.UserModule;
+import ru.innopolis.innoweather.presentation.di.modules.CityModule;
 import ru.innopolis.innoweather.presentation.view.fragment.WeatherDetailsFragment;
 
 public class WeatherDetailsActivity extends BaseActivity implements HasComponent<UserComponent> {
@@ -42,6 +42,10 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
             cityId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_CITY_ID);
         }
         ButterKnife.bind(this);
+        setActionBar();
+    }
+
+    private void setActionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -49,17 +53,17 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         if (outState != null) {
             outState.putInt(INSTANCE_STATE_PARAM_CITY_ID, cityId);
         }
-        super.onSaveInstanceState(outState);
     }
 
     private void initializeInjector() {
         userComponent = DaggerUserComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .userModule(new UserModule(cityId))
+                .userModule(new CityModule(cityId))
                 .build();
     }
 
