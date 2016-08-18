@@ -32,6 +32,24 @@
 
         <TextView
             style="@style/AppTheme.TextViewSubTitle"
+            android:text="@string/view_text_wind_speed"  />
+
+        <TextView
+            android:id="@+id/tv_wind_speed"
+            style="@style/AppTheme.TextViewMainText"
+            tools:text="20" />
+
+        <TextView
+            style="@style/AppTheme.TextViewSubTitle"
+            android:text="@string/view_text_wind_direction"  />
+
+        <TextView
+            android:id="@+id/tv_wind_direction"
+            style="@style/AppTheme.TextViewMainText"
+            tools:text="North" />
+
+        <TextView
+            style="@style/AppTheme.TextViewSubTitle"
             android:text="@string/view_text_cloudiness" />
 
         <TextView

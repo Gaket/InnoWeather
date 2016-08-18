@@ -39,6 +39,10 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     TextView tvHumidity;
     @BindView(R.id.tv_pressure)
     TextView tvPressure;
+    @BindView(R.id.tv_wind_speed)
+    TextView tvWindSpeed;
+    @BindView(R.id.tv_wind_direction)
+    TextView tvWindDirection;
     private Unbinder unbinder;
 
     public WeatherDetailsFragment() {
@@ -117,6 +121,10 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
             tvHumidity.setText(humidity);
             String pressure = String.format(Locale.US, "%d mbar", weather.getPressure().intValue());
             tvPressure.setText(pressure);
+            String windSpeed = String.format(Locale.US, "%d m/sec", weather.getWindSpeed().intValue());
+            tvWindSpeed.setText(windSpeed);
+            String windDirection = String.format(Locale.US, "%s", weather.getWindDirection());
+            tvWindDirection.setText(windDirection);
         }
     }
 

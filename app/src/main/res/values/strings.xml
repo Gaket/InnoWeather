@@ -14,4 +14,6 @@
     <string name="view_text_pressure">Pressure</string>
     <string name="default_city_name">Weather</string>
     <string name="view_text_today">Today</string>
+    <string name="view_text_wind_speed">Wind speed</string>
+    <string name="view_text_wind_direction">Wind direction</string>
 </resources>

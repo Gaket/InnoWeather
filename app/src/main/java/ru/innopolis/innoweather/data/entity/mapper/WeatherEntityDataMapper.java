@@ -20,6 +20,12 @@ import ru.innopolis.innoweather.domain.Weather;
 public class WeatherEntityDataMapper {
     private static final String TAG = "WeatherEntityDataMapper";
 
+    /**
+     * These values should not be extracted to strings.xml because the {@link WeatherEntityDataMapper}
+     * may work outside of Android environment
+     */
+    private static final String[] DIRECTIONS = {"North", "Northeast", "East","Southeast", "South", "Southwest", "West", "Northwest"};
+
     @Inject
     public WeatherEntityDataMapper() {
     }
@@ -34,13 +40,20 @@ public class WeatherEntityDataMapper {
             weather.setTemp(main.getTemp());
             weather.setTempMax(main.getTempMax());
             weather.setTempMin(main.getTempMin());
-            // TODO: handle cituation if there is more than one description
             weather.setCloudiness(weatherEntity.getWeather().get(0).getDescription());
+            weather.setWindDirection(transformWindDirection(weatherEntity.getWind().getDeg()));
+            weather.setWindSpeed(weatherEntity.getWind().getSpeed());
         } else {
             Log.e(TAG, "transform: problem with downloaded weatherEntity");
         }
 
         return weather;
+    }
+
+    private String transformWindDirection(double deg) {
+        // 360 degrees create the full circle. Direction depends on degree
+        int sectionNumber = (int)(deg / (360 / DIRECTIONS.length));
+        return DIRECTIONS[sectionNumber];
     }
 
     public List<Weather> transform(Collection<WeatherEntity> WeatherEntityCollection) {

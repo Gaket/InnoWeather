@@ -13,6 +13,8 @@ public class WeatherModel {
     private Double tempMin;
     private Double tempMax;
     private String cloudiness;
+    private String windDirection;
+    private Double windSpeed;
 
     public WeatherModel(Integer cityId) {
         this.cityId = cityId;
@@ -72,5 +74,21 @@ public class WeatherModel {
 
     public void setTempMax(Double tempMax) {
         this.tempMax = tempMax;
+    }
+
+    public Double getWindSpeed() {
+        return windSpeed;
+    }
+
+    public void setWindSpeed(Double windSpeed) {
+        this.windSpeed = windSpeed;
+    }
+
+    public String getWindDirection() {
+        return windDirection;
+    }
+
+    public void setWindDirection(String windDirection) {
+        this.windDirection = windDirection;
     }
 }
