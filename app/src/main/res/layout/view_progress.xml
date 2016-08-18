@@ -2,12 +2,10 @@
     android:id="@+id/rl_progress"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
-    >
+    android:visibility="gone">
 
-  <ProgressBar
-      style="@style/AppTheme.ProgressBar"
-      android:layout_centerInParent="true"
-      />
+    <ProgressBar
+        style="@style/AppTheme.ProgressBar"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

@@ -6,14 +6,12 @@
     android:orientation="vertical"
     android:id="@+id/city_fragment_container">
 
+    <include layout="@layout/view_progress" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_cities"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/card_layout">
-
-    </android.support.v7.widget.RecyclerView>
-
-    <include layout="@layout/view_progress" />
+        tools:listitem="@layout/card_layout"/>
 
 </LinearLayout>

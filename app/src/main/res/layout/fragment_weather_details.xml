@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     tools:context=".presentation.view.fragment.WeatherDetailsFragment">
 
-    <RelativeLayout
+
+    <LinearLayout
         android:id="@+id/city_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,10 +14,9 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-        <include layout="@layout/view_weather_details" />
-
         <include layout="@layout/view_progress" />
 
+        <include layout="@layout/view_weather_details" />
 
-    </RelativeLayout>
+    </LinearLayout>
 </ScrollView>
