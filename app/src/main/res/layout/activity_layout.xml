@@ -18,7 +18,9 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             app:theme="@style/AppTheme.Toolbar"
-            app:titleTextColor="@color/icons" />
+            app:titleTextAppearance="@style/AppTheme.Toolbar.TitleText"
+            app:titleTextColor="@color/icons"
+            />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.CoordinatorLayout

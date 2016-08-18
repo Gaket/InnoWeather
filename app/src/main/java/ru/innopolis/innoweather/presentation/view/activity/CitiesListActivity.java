@@ -25,6 +25,7 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
+
     @Inject
     CitiesListPresenter citiesListPresenter;
     private UserComponent userComponent;

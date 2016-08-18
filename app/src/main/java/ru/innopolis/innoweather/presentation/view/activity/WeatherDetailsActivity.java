@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +32,22 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
         setContentView(R.layout.activity_layout);
         initializeActivity(savedInstanceState);
         initializeInjector();
+        overridePendingTransition(R.anim.right_in, R.anim.disappear);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.appear, R.anim.light_out);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == android.R.id.home) {
+            finish();
+            overridePendingTransition(R.anim.appear, R.anim.light_out);
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 
 

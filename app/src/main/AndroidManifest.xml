@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.view.activity.WeatherDetailsActivity">
+            android:name=".presentation.view.activity.WeatherDetailsActivity"
+            android:theme="@style/AppTheme">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".presentation.view.activity.CitiesListActivity" />
