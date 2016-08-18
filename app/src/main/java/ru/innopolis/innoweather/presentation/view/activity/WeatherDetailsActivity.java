@@ -13,14 +13,18 @@ import ru.innopolis.innoweather.presentation.di.HasComponent;
 import ru.innopolis.innoweather.presentation.di.components.DaggerUserComponent;
 import ru.innopolis.innoweather.presentation.di.components.UserComponent;
 import ru.innopolis.innoweather.presentation.di.modules.CityModule;
+import ru.innopolis.innoweather.presentation.model.CityModel;
 import ru.innopolis.innoweather.presentation.view.fragment.WeatherDetailsFragment;
 
 public class WeatherDetailsActivity extends BaseActivity implements HasComponent<UserComponent> {
 
     private static final String INTENT_EXTRA_PARAM_CITY_ID = "RU.INNO_WEATHER.INTENT_PARAM_CITY_ID";
-    private static final String INSTANCE_STATE_PARAM_CITY_ID = "RU.INNO_WEATHER.STATE_PARAM_USER_ID";
+    private static final String INTENT_EXTRA_PARAM_CITY_NAME = "RU.INNO_WEATHER.INTENT_PARAM_CITY_NAME";
+    private static final String INSTANCE_STATE_PARAM_CITY_ID = "RU.INNO_WEATHER.STATE_PARAM_CITY_ID";
+    private static final String INSTANCE_STATE_PARAM_CITY_NAME = "RU.INNO_WEATHER.STATE_PARAM_CITY_NAME";
 
     private int cityId;
+    private String cityName;
     private UserComponent userComponent;
 
     @BindView(R.id.toolbar)
@@ -29,7 +33,7 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_layout);
+        setContentView(R.layout.activity_weather_details);
         initializeActivity(savedInstanceState);
         initializeInjector();
         overridePendingTransition(R.anim.right_in, R.anim.disappear);
@@ -54,9 +58,11 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
     private void initializeActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             cityId = getIntent().getIntExtra(INTENT_EXTRA_PARAM_CITY_ID, -1);
+            cityName = getIntent().getStringExtra(INTENT_EXTRA_PARAM_CITY_NAME);
             addFragment(R.id.fragmentContainer, new WeatherDetailsFragment(), getString(R.string.weather_tag));
         } else {
             cityId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_CITY_ID);
+            cityName = savedInstanceState.getString(INSTANCE_STATE_PARAM_CITY_NAME);
         }
         ButterKnife.bind(this);
         setActionBar();
@@ -64,6 +70,7 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
 
     private void setActionBar() {
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(cityName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -73,6 +80,7 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
         super.onSaveInstanceState(outState);
         if (outState != null) {
             outState.putInt(INSTANCE_STATE_PARAM_CITY_ID, cityId);
+            outState.putString(INSTANCE_STATE_PARAM_CITY_NAME, cityName);
         }
     }
 
@@ -89,9 +97,11 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
         return userComponent;
     }
 
-    public static Intent getCallingIntent(Context context, int cityId) {
+    public static Intent getCallingIntent(Context context, CityModel cityModel) {
         Intent callingIntent = new Intent(context, WeatherDetailsActivity.class);
-        callingIntent.putExtra(INTENT_EXTRA_PARAM_CITY_ID, cityId);
+        callingIntent.putExtra(INTENT_EXTRA_PARAM_CITY_ID, cityModel.getId());
+        callingIntent.putExtra(INTENT_EXTRA_PARAM_CITY_NAME, cityModel.getName());
+
         return callingIntent;
     }
 

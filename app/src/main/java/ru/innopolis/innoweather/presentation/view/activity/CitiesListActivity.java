@@ -33,7 +33,7 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_layout);
+        setContentView(R.layout.activity_cities);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
@@ -58,7 +58,7 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
 
     @Override
     public void onCityClicked(CityModel cityModel) {
-        navigator.navigateToWeatherDetails(this, cityModel.getId());
+        navigator.navigateToWeatherDetails(this, cityModel);
     }
 
     @Override

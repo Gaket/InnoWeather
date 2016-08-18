@@ -12,4 +12,6 @@
     <string name="weather_tag">weather</string>
     <string name="view_text_humidity">Humidity</string>
     <string name="view_text_pressure">Pressure</string>
+    <string name="default_city_name">Weather</string>
+    <string name="view_text_today">Today</string>
 </resources>

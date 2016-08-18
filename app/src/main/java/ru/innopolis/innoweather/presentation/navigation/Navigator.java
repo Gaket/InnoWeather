@@ -21,6 +21,7 @@ import android.content.Intent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ru.innopolis.innoweather.presentation.model.CityModel;
 import ru.innopolis.innoweather.presentation.view.activity.WeatherDetailsActivity;
 
 /**
@@ -39,9 +40,9 @@ public class Navigator {
    *
    * @param context A Context needed to open the destiny activity.
    */
-  public void navigateToWeatherDetails(Context context, int cityId) {
+  public void navigateToWeatherDetails(Context context, CityModel cityModel) {
     if (context != null) {
-      Intent intentToLaunch = WeatherDetailsActivity.getCallingIntent(context, cityId);
+      Intent intentToLaunch = WeatherDetailsActivity.getCallingIntent(context, cityModel);
       context.startActivity(intentToLaunch);
     }
   }

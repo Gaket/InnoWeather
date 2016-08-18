@@ -7,7 +7,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".presentation.view.fragment.WeatherDetailsFragment"
-    android:id="@+id/weather_fragment_container">>
+    android:id="@+id/city_fragment_container">
 
     <include layout="@layout/view_weather_details" />
 

@@ -7,21 +7,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            app:theme="@style/AppTheme.Toolbar"
-            app:titleTextAppearance="@style/AppTheme.Toolbar.TitleText"
-            app:titleTextColor="@color/icons"
-            />
-    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/appbar" />
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
