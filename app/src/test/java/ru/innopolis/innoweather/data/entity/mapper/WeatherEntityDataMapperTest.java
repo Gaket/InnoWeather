@@ -5,7 +5,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-// TODO: make the tests localization independent
+// TODO: make the tests text languagee-independent
 
 public class WeatherEntityDataMapperTest {
 

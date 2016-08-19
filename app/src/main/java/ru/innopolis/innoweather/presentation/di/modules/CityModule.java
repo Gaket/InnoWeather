@@ -67,7 +67,6 @@ public class CityModule {
         return new GetCitiesList(citiesRepository, threadExecutor, postExecutionThread);
     }
 
-
     @Provides
     @PerActivity
     @Named("initializeCitiesList")
@@ -76,7 +75,6 @@ public class CityModule {
             PostExecutionThread postExecutionThread) {
         return new InitializeCitiesLists(citiesRepository, threadExecutor, postExecutionThread);
     }
-
 
     @Provides
     @PerActivity
@@ -87,7 +85,6 @@ public class CityModule {
         return new AddNewCity(citiesRepository, threadExecutor, postExecutionThread);
     }
 
-
     @Provides
     @PerActivity
     @Named("removeCity")
@@ -96,5 +93,4 @@ public class CityModule {
             PostExecutionThread postExecutionThread) {
         return new RemoveCity(citiesRepository, threadExecutor, postExecutionThread);
     }
-
 }
