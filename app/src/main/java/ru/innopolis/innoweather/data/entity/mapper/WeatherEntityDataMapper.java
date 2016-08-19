@@ -50,9 +50,14 @@ public class WeatherEntityDataMapper {
         return weather;
     }
 
-    private String transformWindDirection(double deg) {
+    public String transformWindDirection(double deg) {
         // 360 degrees create the full circle. Direction depends on degree
-        int sectionNumber = (int)(deg / (360 / DIRECTIONS.length));
+        // Make the Notrth equal zero degrees
+        double normalizedDegree = deg + 360 / DIRECTIONS.length / 2;
+        // normalizedDegree is casted to int to make the division on integers
+        int sectionNumber = (int)normalizedDegree / (360 / DIRECTIONS.length);
+        // If section number > number of directions, then it belongs to the first section
+        sectionNumber = (sectionNumber >= DIRECTIONS.length) ? 0 : sectionNumber;
         return DIRECTIONS[sectionNumber];
     }
 

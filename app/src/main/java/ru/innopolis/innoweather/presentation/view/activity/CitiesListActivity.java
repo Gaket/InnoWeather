@@ -25,7 +25,6 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
-
     @Inject
     CitiesListPresenter citiesListPresenter;
     private UserComponent userComponent;
@@ -42,7 +41,6 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
         }
         initializeInjector();
     }
-
 
     private void initializeInjector() {
         userComponent = DaggerUserComponent.builder()
@@ -74,6 +72,4 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
         CitiesListFragment fragment = (CitiesListFragment) manager.findFragmentByTag(getString(R.string.cities_tag));
         fragment.showAddNewCityScreen();
     }
-
-
 }
