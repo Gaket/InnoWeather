@@ -52,16 +52,6 @@ public class BaseCache<T> implements Cache<T> {
         });
     }
 
-    private File buildFile(int cityId) {
-        StringBuilder fileNameBuilder = new StringBuilder();
-        fileNameBuilder.append(cacheDir.getPath());
-        fileNameBuilder.append(File.separator);
-        fileNameBuilder.append(filePrefix);
-        fileNameBuilder.append(cityId);
-
-        return new File(fileNameBuilder.toString());
-    }
-
     @Override
     public Observable<T> getAll() {
         Collection<File> entityFiles = fileManager.getAllfiles(cacheDir, filePrefix);
@@ -93,6 +83,53 @@ public class BaseCache<T> implements Cache<T> {
         }
     }
 
+    @Override
+    public boolean isCached(int cityId) {
+        File userEntitiyFile = this.buildFile(cityId);
+        return fileManager.exists(userEntitiyFile);
+    }
+
+    @Override
+    public boolean isExpired() {
+        long currentTime = System.currentTimeMillis();
+        long lastUpdateTime = this.getLastCacheUpdateTimeMillis();
+
+        boolean expired = ((currentTime - lastUpdateTime) > EXPIRATION_TIME);
+
+        if (expired) {
+            this.evictAll();
+        }
+
+        return expired;
+    }
+
+    @Override
+    public void evictAll() {
+        this.executeAsynchronously(new CacheEvictor(this.fileManager, this.cacheDir));
+    }
+
+    @Override
+    public boolean remove(HasId entity) {
+        boolean success;
+        if (entity != null && isCached(entity.getId())) {
+            File entityFile = this.buildFile(entity.getId());
+            success = entityFile.delete();
+        } else {
+            success = false;
+        }
+        return success;
+    }
+
+    private File buildFile(int cityId) {
+        StringBuilder fileNameBuilder = new StringBuilder();
+        fileNameBuilder.append(cacheDir.getPath());
+        fileNameBuilder.append(File.separator);
+        fileNameBuilder.append(filePrefix);
+        fileNameBuilder.append(cityId);
+
+        return new File(fileNameBuilder.toString());
+    }
+
     /*
   * Executes a {@link Runnable} in another Thread.
   *
@@ -111,32 +148,12 @@ public class BaseCache<T> implements Cache<T> {
                 SETTINGS_KEY_LAST_CACHE_UPDATE, currentMillis);
     }
 
-    @Override
-    public boolean isCached(int cityId) {
-        File userEntitiyFile = this.buildFile(cityId);
-        return fileManager.exists(userEntitiyFile);
-    }
-
-    @Override
-    public boolean isExpired() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void evictAll() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean remove(HasId entity) {
-        boolean success;
-        if (entity != null && isCached(entity.getId())) {
-            File entityFile = this.buildFile(entity.getId());
-            success = entityFile.delete();
-        } else {
-            success = false;
-        }
-        return success;
+    /**
+     * Get in millis, the last time the cache was accessed.
+     */
+    private long getLastCacheUpdateTimeMillis() {
+        return this.fileManager.getFromPreferences(this.context, SETTINGS_FILE_NAME,
+                SETTINGS_KEY_LAST_CACHE_UPDATE);
     }
 
     /**
@@ -156,6 +173,24 @@ public class BaseCache<T> implements Cache<T> {
         @Override
         public void run() {
             this.fileManager.writeToFile(fileToWrite, fileContent);
+        }
+    }
+
+    /**
+     * {@link Runnable} class for evicting all the cached files
+     */
+    private static class CacheEvictor implements Runnable {
+        private final FileManager fileManager;
+        private final File cacheDir;
+
+        CacheEvictor(FileManager fileManager, File cacheDir) {
+            this.fileManager = fileManager;
+            this.cacheDir = cacheDir;
+        }
+
+        @Override
+        public void run() {
+            this.fileManager.clearDirectory(this.cacheDir);
         }
     }
 }
