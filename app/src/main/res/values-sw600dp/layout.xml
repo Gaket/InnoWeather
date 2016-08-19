@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="view_weather_details" type="layout">@layout/view_weather_details_two_panes</item>
+</resources>

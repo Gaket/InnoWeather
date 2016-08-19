@@ -61,11 +61,7 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view;
-        if (getActivity().getResources().getBoolean(R.bool.landscape_mode)) {
-            view = inflater.inflate(R.layout.fragment_weather_details_land, container, false);
-        } else {
-            view = inflater.inflate(R.layout.fragment_weather_details, container, false);
-        }
+        view = inflater.inflate(R.layout.fragment_weather_details, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -131,7 +127,7 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
         if (weather != null) {
             String temp = String.format(Locale.US, "%d°С", weather.getTemp().intValue());
             tvTemp.setText(temp);
-            tvCloudiness.setText(weather.getCloudiness());
+            tvCloudiness.setText(capitalize(weather.getCloudiness()));
             String humidity = String.format(Locale.US, "%d%%", weather.getHumidity().intValue());
             tvHumidity.setText(humidity);
             String pressure = String.format(Locale.US, "%d %s", weather.getPressure().intValue(), getActivity().getString(R.string.mbar));
@@ -186,5 +182,9 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
         if (weatherDetailsPresenter != null) {
             weatherDetailsPresenter.initialize();
         }
+    }
+
+    private String capitalize(final String line) {
+        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
     }
 }

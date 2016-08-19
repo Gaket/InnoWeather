@@ -10,13 +10,17 @@ import ru.innopolis.innoweather.data.entity.HasId;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
 import rx.Observable;
 
+/**
+ * Cache that uses standard file input / output to save serialized entities
+ *
+ * @param <T> type of entity to serialize
+ */
 public class BaseCache<T> implements Cache<T> {
     private static final String TAG = "BaseCache";
 
     private static final String SETTINGS_FILE_NAME = "ru.innopolis.innoweather.SETTINGS";
     private static final String SETTINGS_KEY_LAST_CACHE_UPDATE = "last_cache_update";
     private static final long EXPIRATION_TIME = 60 * 10 * 1000; // 10 minutes
-
 
     private final Context context;
     private final File cacheDir;
