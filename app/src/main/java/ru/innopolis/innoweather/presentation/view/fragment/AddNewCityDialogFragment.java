@@ -65,9 +65,13 @@ public class AddNewCityDialogFragment extends DialogFragment implements AddNewCi
             dialog.dismiss();
         });
         builder.setPositiveButton(getString(R.string.dialog_add_city), (DialogInterface dialog, int which) -> {
-            addNewCityPresenter.addCity(selectedCity);
-            sendResult(REQUEST_CODE);
-            dialog.dismiss();
+            if (selectedCity == null) {
+                showError(getActivity().getString(R.string.msg_city_not_found));
+            } else {
+                addNewCityPresenter.addCity(selectedCity);
+                sendResult(REQUEST_CODE);
+                dialog.dismiss();
+            }
         });
 
         return builder.create();
