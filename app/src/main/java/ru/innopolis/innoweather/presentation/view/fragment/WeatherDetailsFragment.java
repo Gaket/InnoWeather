@@ -60,7 +60,12 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_weather_details, container, false);
+        View view;
+        if (getActivity().getResources().getBoolean(R.bool.landscape_mode)) {
+            view = inflater.inflate(R.layout.fragment_weather_details_land, container, false);
+        } else {
+            view = inflater.inflate(R.layout.fragment_weather_details, container, false);
+        }
         unbinder = ButterKnife.bind(this, view);
         return view;
     }

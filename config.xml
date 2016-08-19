@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="bool" name="landscape_mode">false</item>
+    <item type="bool" name="twoPaneMode">false</item>
 </resources>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -104,7 +105,12 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     }
 
     private void setupRecyclerView() {
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        LinearLayoutManager llm;
+        if (getActivity().getResources().getBoolean(R.bool.landscape_mode)) {
+            llm = new GridLayoutManager(getContext(), 2);
+        } else {
+            llm = new LinearLayoutManager(getContext());
+        }
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rvUsers.setLayoutManager(llm);
         rvUsers.setHasFixedSize(true);
