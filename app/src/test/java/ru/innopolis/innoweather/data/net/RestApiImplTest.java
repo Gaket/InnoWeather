@@ -3,11 +3,13 @@ package ru.innopolis.innoweather.data.net;
 import org.junit.Before;
 import org.junit.Test;
 
-import ru.innopolis.innoweather.data.entity.internals.Weather;
 import ru.innopolis.innoweather.data.entity.WeatherEntity;
+import ru.innopolis.innoweather.data.entity.internals.Weather;
 import rx.Observable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class RestApiImplTest {
 

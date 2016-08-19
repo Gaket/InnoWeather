@@ -10,7 +10,7 @@ import ru.innopolis.innoweather.data.entity.internals.Main;
 import ru.innopolis.innoweather.data.entity.internals.Weather;
 import ru.innopolis.innoweather.data.entity.internals.Wind;
 
-public class WeatherEntity {
+public class WeatherEntity implements HasId{
     private static final String TAG = "WeatherEntity";
 
     @SerializedName("id")
@@ -19,7 +19,6 @@ public class WeatherEntity {
     private Main main;
     private List<Weather> weather;
     private Wind wind;
-
 
     public int getCityId() {
         return cityId;
@@ -70,5 +69,10 @@ public class WeatherEntity {
         sb.append(", \n\t").append("wind=").append(wind);
         sb.append("\n").append('}');
         return sb.toString();
+    }
+
+    @Override
+    public int getId() {
+        return getCityId();
     }
 }

@@ -25,14 +25,15 @@ import javax.inject.Singleton;
 
 import ru.innopolis.innoweather.data.cache.serializer.JsonSerializer;
 import ru.innopolis.innoweather.data.entity.CityEntity;
+import ru.innopolis.innoweather.data.entity.HasId;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
 import rx.Observable;
 
 /**
- * {@link CityCache} implementation.
+ * {@link Cache} implementation.
  */
 @Singleton
-public class CityCacheImpl implements CityCache {
+public class CityCacheImpl implements Cache<CityEntity> {
 
     private static final String SETTINGS_FILE_NAME = "ru.innopolis.innoweather.SETTINGS";
     private static final String SETTINGS_KEY_LAST_CACHE_UPDATE = "last_cache_update";
@@ -102,11 +103,11 @@ public class CityCacheImpl implements CityCache {
 
 
     @Override
-    public void put(CityEntity cityEntity) {
-        if (cityEntity != null) {
-            File cityEntitiyFile = this.buildFile(cityEntity.getId());
-            if (!isCached(cityEntity.getId())) {
-                String jsonString = this.serializer.serialize(cityEntity);
+    public void put(HasId entity) {
+        if (entity != null) {
+            File cityEntitiyFile = this.buildFile(entity.getId());
+            if (!isCached(entity.getId())) {
+                String jsonString = this.serializer.serialize(entity);
                 this.executeAsynchronously(new CacheWriter(this.fileManager, cityEntitiyFile,
                         jsonString));
                 setLastCacheUpdateTimeMillis();
@@ -140,8 +141,8 @@ public class CityCacheImpl implements CityCache {
     }
 
     @Override
-    public boolean remove(CityEntity cityEntity) {
-        boolean success = false;
+    public boolean remove(HasId cityEntity) {
+        boolean success;
         if (cityEntity != null && isCached(cityEntity.getId())) {
             File cityEntitiyFile = this.buildFile(cityEntity.getId());
             success = cityEntitiyFile.delete();

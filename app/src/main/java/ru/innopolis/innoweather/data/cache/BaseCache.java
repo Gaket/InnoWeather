@@ -5,58 +5,46 @@ import android.content.Context;
 import java.io.File;
 import java.util.Collection;
 
-import javax.inject.Inject;
-
 import ru.innopolis.innoweather.data.cache.serializer.JsonSerializer;
 import ru.innopolis.innoweather.data.entity.HasId;
-import ru.innopolis.innoweather.data.entity.WeatherEntity;
 import ru.innopolis.innoweather.domain.executor.ThreadExecutor;
 import rx.Observable;
 
-public class WeatherCacheImpl implements Cache<WeatherEntity> {
-    private static final String TAG = "WeatherCacheImpl";
+public class BaseCache<T> implements Cache<T> {
+    private static final String TAG = "BaseCache";
+
     private static final String SETTINGS_FILE_NAME = "ru.innopolis.innoweather.SETTINGS";
     private static final String SETTINGS_KEY_LAST_CACHE_UPDATE = "last_cache_update";
-
-    private static final String DEFAULT_FILE_NAME = "weather_";
     private static final long EXPIRATION_TIME = 60 * 10 * 1000; // 10 minutes
+
 
     private final Context context;
     private final File cacheDir;
     private final JsonSerializer serializer;
     private final FileManager fileManager;
     private final ThreadExecutor threadExecutor;
+    private final Class<T> typeParameterClass;
+    private final String filePrefix;
 
-
-    /**
-     * Constructor of the class {@link CityCacheImpl}.
-     *
-     * @param context             A
-     * @param cityCacheSerializer {@link JsonSerializer} for object serialization.
-     * @param fileManager         {@link FileManager} for saving serialized objects to the file system.
-     */
-    @Inject
-    public WeatherCacheImpl(Context context, JsonSerializer cityCacheSerializer,
-                            FileManager fileManager, ThreadExecutor executor) {
-        if (context == null || cityCacheSerializer == null || fileManager == null || executor == null) {
-            throw new IllegalArgumentException("Invalid null parameter");
-        }
-        this.context = context.getApplicationContext();
-        this.cacheDir = this.context.getCacheDir();
-        this.serializer = cityCacheSerializer;
+    public BaseCache(Context context, JsonSerializer serializer, FileManager fileManager, ThreadExecutor threadExecutor, Class<T> typeParameterClass, String filePrefix) {
+        this.context = context;
+        this.cacheDir = context.getCacheDir();;
+        this.serializer = serializer;
         this.fileManager = fileManager;
-        this.threadExecutor = executor;
+        this.threadExecutor = threadExecutor;
+        this.typeParameterClass = typeParameterClass;
+        this.filePrefix = filePrefix;
     }
 
     @Override
-    public Observable<WeatherEntity> get(int cityId) {
+    public Observable<T> get(int cityId) {
         return Observable.create(subscriber -> {
-            File weatherEntityFile = WeatherCacheImpl.this.buildFile(cityId);
-            String fileContent = WeatherCacheImpl.this.fileManager.readFileContent(weatherEntityFile);
-            WeatherEntity weatherEntity = WeatherCacheImpl.this.serializer.deserialize(fileContent, WeatherEntity.class);
+            File weatherEntityFile = BaseCache.this.buildFile(cityId);
+            String fileContent = BaseCache.this.fileManager.readFileContent(weatherEntityFile);
+            T entity = BaseCache.this.serializer.deserialize(fileContent, typeParameterClass);
 
-            if (weatherEntity != null) {
-                subscriber.onNext(weatherEntity);
+            if (entity != null) {
+                subscriber.onNext(entity);
                 subscriber.onCompleted();
             } else {
                 subscriber.onError(new RuntimeException("Weather not found"));
@@ -68,22 +56,22 @@ public class WeatherCacheImpl implements Cache<WeatherEntity> {
         StringBuilder fileNameBuilder = new StringBuilder();
         fileNameBuilder.append(cacheDir.getPath());
         fileNameBuilder.append(File.separator);
-        fileNameBuilder.append(DEFAULT_FILE_NAME);
+        fileNameBuilder.append(filePrefix);
         fileNameBuilder.append(cityId);
 
         return new File(fileNameBuilder.toString());
     }
 
     @Override
-    public Observable<WeatherEntity> getAll() {
-        Collection<File> weatherEntityFiles = fileManager.getAllfiles(cacheDir, DEFAULT_FILE_NAME);
+    public Observable<T> getAll() {
+        Collection<File> entityFiles = fileManager.getAllfiles(cacheDir, filePrefix);
         return Observable.create(subscriber -> {
-            for (File file : weatherEntityFiles) {
-                String fileContent = WeatherCacheImpl.this.fileManager.readFileContent(file);
-                WeatherEntity weatherEntity = WeatherCacheImpl.this.serializer.deserialize(fileContent, WeatherEntity.class);
+            for (File file : entityFiles) {
+                String fileContent = BaseCache.this.fileManager.readFileContent(file);
+                T entity = BaseCache.this.serializer.deserialize(fileContent, typeParameterClass);
 
-                if (weatherEntity != null) {
-                    subscriber.onNext(weatherEntity);
+                if (entity != null) {
+                    subscriber.onNext(entity);
                 } else {
                     subscriber.onError(new RuntimeException("Weather not found"));
                 }
@@ -95,46 +83,43 @@ public class WeatherCacheImpl implements Cache<WeatherEntity> {
     @Override
     public void put(HasId entity) {
         if (entity != null) {
-            File weatherEntitiyFile = this.buildFile(entity.getId());
+            File entitiyFile = this.buildFile(entity.getId());
             if (!isCached(entity.getId())) {
                 String jsonString = this.serializer.serialize(entity);
-                this.executeAsynchronously(new CacheWriter(this.fileManager, weatherEntitiyFile,
+                this.executeAsynchronously(new CacheWriter(this.fileManager, entitiyFile,
                         jsonString));
                 setLastCacheUpdateTimeMillis();
             }
         }
     }
 
+    /*
+  * Executes a {@link Runnable} in another Thread.
+  *
+  * @param runnable {@link Runnable} to execute
+  */
+    private void executeAsynchronously(Runnable runnable) {
+        this.threadExecutor.execute(runnable);
+    }
 
     /**
      * Set in millis, the last time the cache was accessed.
      */
     private void setLastCacheUpdateTimeMillis() {
         long currentMillis = System.currentTimeMillis();
-        this.fileManager.writeToPreferences(this.context, SETTINGS_FILE_NAME,
+        fileManager.writeToPreferences(this.context, SETTINGS_FILE_NAME,
                 SETTINGS_KEY_LAST_CACHE_UPDATE, currentMillis);
-    }
-
-
-    /*
-    * Executes a {@link Runnable} in another Thread.
-    *
-    * @param runnable {@link Runnable} to execute
-    */
-    private void executeAsynchronously(Runnable runnable) {
-        this.threadExecutor.execute(runnable);
     }
 
     @Override
     public boolean isCached(int cityId) {
         File userEntitiyFile = this.buildFile(cityId);
-        return this.fileManager.exists(userEntitiyFile);
+        return fileManager.exists(userEntitiyFile);
     }
 
     @Override
     public boolean isExpired() {
         throw new UnsupportedOperationException();
-
     }
 
     @Override
@@ -143,10 +128,10 @@ public class WeatherCacheImpl implements Cache<WeatherEntity> {
     }
 
     @Override
-    public boolean remove(HasId weatherEntity) {
+    public boolean remove(HasId entity) {
         boolean success;
-        if (weatherEntity != null && isCached(weatherEntity.getId())) {
-            File entityFile = this.buildFile(weatherEntity.getId());
+        if (entity != null && isCached(entity.getId())) {
+            File entityFile = this.buildFile(entity.getId());
             success = entityFile.delete();
         } else {
             success = false;

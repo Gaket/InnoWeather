@@ -2,7 +2,7 @@ package ru.innopolis.innoweather.data.entity;
 
 import ru.innopolis.innoweather.data.entity.internals.Coordinates;
 
-public class CityEntity {
+public class CityEntity implements HasId {
     private static final String TAG = "CityEntity";
 
     private int id;

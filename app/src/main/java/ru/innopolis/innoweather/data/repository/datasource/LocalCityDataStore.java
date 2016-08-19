@@ -9,31 +9,31 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
-import ru.innopolis.innoweather.data.cache.CityCache;
+import ru.innopolis.innoweather.data.cache.Cache;
 import ru.innopolis.innoweather.data.entity.CityEntity;
 import rx.Observable;
 
 public class LocalCityDataStore implements CityDataStore {
     private static final String TAG = "LocalCityDataStore";
 
-    private final CityCache cityCache;
+    private final Cache cache;
 
-    public LocalCityDataStore(CityCache cityCache) {
-        this.cityCache = cityCache;
+    public LocalCityDataStore(Cache cache) {
+        this.cache = cache;
     }
 
     @Override
     public Observable<CityEntity> getCity(final int cityId) {
-        return cityCache.get(cityId);
+        return cache.get(cityId);
     }
 
     @Override
     public Observable<CityEntity> getAllCities() {
-        return cityCache.getAll();
+        return cache.getAll();
     }
 
     public Observable<Boolean> addCity(CityEntity cityEntity) {
-        cityCache.put(cityEntity);
+        cache.put(cityEntity);
         return Observable.just(Boolean.TRUE);
     }
 
@@ -41,14 +41,14 @@ public class LocalCityDataStore implements CityDataStore {
     public Observable<Boolean> initializeCities() {
         List<CityEntity> entities = getCityEntities(new StringReader(initialData));
         for (CityEntity entity : entities) {
-            cityCache.put(entity);
+            cache.put(entity);
         }
         return Observable.just(true);
     }
 
     @Override
     public Observable<Boolean> removeCity(CityEntity cityEntity) {
-        boolean result = cityCache.remove(cityEntity);
+        boolean result = cache.remove(cityEntity);
         return Observable.just(result);
     }
 

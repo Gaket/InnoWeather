@@ -1,6 +1,6 @@
 package ru.innopolis.innoweather.data.repository.datasource;
 
-import ru.innopolis.innoweather.data.cache.WeatherCache;
+import ru.innopolis.innoweather.data.cache.Cache;
 import ru.innopolis.innoweather.data.entity.WeatherEntity;
 import ru.innopolis.innoweather.data.net.RestApi;
 import rx.Observable;
@@ -10,9 +10,9 @@ public class CloudWeatherDataStore implements WeatherDataStore {
     private static final String TAG = "CloudWeatherDataStore";
 
     private final RestApi restApi;
-    private final WeatherCache weatherCache;
+    private final Cache<WeatherEntity> weatherCache;
 
-    public CloudWeatherDataStore(RestApi restApi, WeatherCache weatherCache) {
+    public CloudWeatherDataStore(RestApi restApi, Cache<WeatherEntity> weatherCache) {
         this.restApi = restApi;
         this.weatherCache = weatherCache;
     }

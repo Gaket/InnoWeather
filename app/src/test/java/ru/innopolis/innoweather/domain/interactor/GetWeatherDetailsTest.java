@@ -20,9 +20,12 @@ public class GetWeatherDetailsTest {
 
     private GetWeatherDetails getWeatherDetails;
 
-    @Mock private WeatherRepository mockWeatherRepository;
-    @Mock private ThreadExecutor mockThreadExecutor;
-    @Mock private PostExecutionThread mockPostExecutionThread;
+    @Mock
+    private WeatherRepository mockWeatherRepository;
+    @Mock
+    private ThreadExecutor mockThreadExecutor;
+    @Mock
+    private PostExecutionThread mockPostExecutionThread;
 
     @Before
     public void setUp() {

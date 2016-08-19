@@ -22,7 +22,8 @@ public class UseCaseTest {
 
     @Mock
     private ThreadExecutor mockThreadExecutor;
-    @Mock private PostExecutionThread mockPostExecutionThread;
+    @Mock
+    private PostExecutionThread mockPostExecutionThread;
 
     @Before
     public void setUp() {
@@ -60,11 +61,13 @@ public class UseCaseTest {
             super(threadExecutor, postExecutionThread);
         }
 
-        @Override protected Observable buildUseCaseObservable() {
+        @Override
+        protected Observable buildUseCaseObservable() {
             return Observable.empty();
         }
 
-        @Override public void execute(Subscriber UseCaseSubscriber) {
+        @Override
+        public void execute(Subscriber UseCaseSubscriber) {
             super.execute(UseCaseSubscriber);
         }
     }
