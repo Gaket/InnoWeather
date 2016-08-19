@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.innopolis.innoweather.R;
-import ru.innopolis.innoweather.presentation.di.components.UserComponent;
+import ru.innopolis.innoweather.presentation.di.components.CityComponent;
 import ru.innopolis.innoweather.presentation.model.CityModel;
 import ru.innopolis.innoweather.presentation.presenter.CitiesListPresenter;
 import ru.innopolis.innoweather.presentation.view.CitiesListView;
@@ -35,8 +36,6 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
      */
     public interface CityListListener {
         void onCityClicked(final CityModel cityModel);
-
-        void onUpdateClicked();
     }
 
     @Inject
@@ -78,7 +77,7 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getComponent(UserComponent.class).inject(this);
+        getComponent(CityComponent.class).inject(this);
     }
 
     @Override
@@ -120,7 +119,9 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rvUsers.setLayoutManager(llm);
+        rvUsers.setHasFixedSize(true);
         rvUsers.setAdapter(citiesAdapter);
+        rvUsers.setItemAnimator(new DefaultItemAnimator());
         citiesAdapter.setOnItemClickListener(onItemClickListener);
     }
 
@@ -139,7 +140,7 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     @Override
     public void renderCitiesList(Collection<CityModel> cityModels) {
         if (cityModels != null) {
-            citiesAdapter.setCitiesCollection(cityModels);
+            citiesAdapter.setmCitiesCollection(cityModels);
         }
     }
 

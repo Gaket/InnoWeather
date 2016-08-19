@@ -15,7 +15,7 @@ import ru.innopolis.innoweather.presentation.view.fragment.WeatherDetailsFragmen
  */
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = {ActivityModule.class, CityModule.class})
-public interface UserComponent extends ActivityComponent {
+public interface CityComponent extends ActivityComponent {
     void inject(WeatherDetailsFragment weatherDetailsFragment);
     void inject(CitiesListFragment citiesListFragment);
     void inject(AddNewCityDialogFragment addNewCityDialogFragment);
