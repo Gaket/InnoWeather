@@ -16,4 +16,9 @@
     <string name="view_text_today">Today</string>
     <string name="view_text_wind_speed">Wind speed</string>
     <string name="view_text_wind_direction">Wind direction</string>
+    <string name="mbar">mbar</string>
+    <string name="msec">m/sec</string>
+    <string name="msg_dowload_success">Data successfully downloaded</string>
+    <string name="msg_network_unavailable">Network is unavailable. Using cached data.</string>
+    <string name="ex_not_implemented">Not implemented yet</string>
 </resources>

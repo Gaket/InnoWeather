@@ -5,6 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 
 import javax.inject.Inject;
 
@@ -20,11 +24,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Inject
     Navigator navigator;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getApplicationComponent().inject(this);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,11 +39,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     protected void addFragment(int containerViewId, Fragment fragment, String tag) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(containerViewId, fragment, tag);
         fragmentTransaction.commit();
     }
+
 
     /**
      * Get the Main Application component for dependency injection.
@@ -48,6 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return ((AndroidApplication) getApplication()).getApplicationComponent();
     }
 
+
     /**
      * Get an Activity module for dependency injection.
      *
@@ -56,4 +65,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected ActivityModule getActivityModule() {
         return new ActivityModule(this);
     }
+
+
 }

@@ -8,6 +8,7 @@ import ru.innopolis.innoweather.R;
 import ru.innopolis.innoweather.presentation.di.HasComponent;
 
 public abstract class BaseFragment extends Fragment {
+
     /**
      * Shows a {@link android.widget.Toast} message.
      *
@@ -39,7 +40,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * Updates data in current fragment
      *
-     * @return true in case of succesful update
+     * @return true in case of successful update
      */
     public abstract boolean update();
 }

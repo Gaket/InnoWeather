@@ -2,6 +2,7 @@ package ru.innopolis.innoweather.presentation.view.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 
@@ -12,13 +13,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.innopolis.innoweather.R;
 import ru.innopolis.innoweather.presentation.di.HasComponent;
-import ru.innopolis.innoweather.presentation.di.components.DaggerUserComponent;
-import ru.innopolis.innoweather.presentation.di.components.UserComponent;
+import ru.innopolis.innoweather.presentation.di.components.CityComponent;
+import ru.innopolis.innoweather.presentation.di.components.DaggerCityComponent;
 import ru.innopolis.innoweather.presentation.model.CityModel;
 import ru.innopolis.innoweather.presentation.presenter.CitiesListPresenter;
 import ru.innopolis.innoweather.presentation.view.fragment.CitiesListFragment;
 
-public class CitiesListActivity extends BaseActivity implements HasComponent<UserComponent>, CitiesListFragment.CityListListener {
+public class CitiesListActivity extends BaseActivity implements HasComponent<CityComponent>, CitiesListFragment.CityListListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -27,7 +28,8 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
 
     @Inject
     CitiesListPresenter citiesListPresenter;
-    private UserComponent userComponent;
+    private CityComponent cityComponent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,21 +39,23 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            addFragment(R.id.fragmentContainer, new CitiesListFragment(), getString(R.string.cities_tag));
+            Fragment cities = new CitiesListFragment();
+            cities.setHasOptionsMenu(true);
+            addFragment(R.id.fragmentContainer, cities, getString(R.string.cities_tag));
         }
         initializeInjector();
     }
 
     private void initializeInjector() {
-        userComponent = DaggerUserComponent.builder()
+        cityComponent = DaggerCityComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
     }
 
     @Override
-    public UserComponent getComponent() {
-        return userComponent;
+    public CityComponent getComponent() {
+        return cityComponent;
     }
 
     @Override
@@ -59,15 +63,9 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Use
         navigator.navigateToWeatherDetails(this, cityModel);
     }
 
-    @Override
-    public void onUpdateClicked() {
-        // TODO: implement
-    }
 
     @OnClick(R.id.fab)
     public void onClick() {
-        // TODO: check out why the presenter is null here
-        // citiesListPresenter.showAddNewCityScreen();
         FragmentManager manager = getSupportFragmentManager();
         CitiesListFragment fragment = (CitiesListFragment) manager.findFragmentByTag(getString(R.string.cities_tag));
         fragment.showAddNewCityScreen();

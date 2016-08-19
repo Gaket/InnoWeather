@@ -10,4 +10,11 @@ public interface WeatherDetailsView extends LoadDataView {
      * @param weather
      */
     void renderWeatherDetails(WeatherModel weather);
+
+    /**
+     * Show message
+     *
+     * @param msg
+     */
+    void showMessage(String msg);
 }

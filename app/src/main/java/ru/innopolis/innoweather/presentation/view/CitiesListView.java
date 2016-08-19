@@ -24,4 +24,11 @@ public interface CitiesListView extends LoadDataView {
      * @param cityModel
      */
     void viewWeather(CityModel cityModel);
+
+    /**
+     * Show message
+     *
+     * @param msg
+     */
+    void showMessage(String msg);
 }

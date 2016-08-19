@@ -27,6 +27,7 @@ import ru.innopolis.innoweather.domain.interactor.AddNewCity;
 import ru.innopolis.innoweather.domain.interactor.GetCitiesList;
 import ru.innopolis.innoweather.domain.interactor.GetWeatherDetails;
 import ru.innopolis.innoweather.domain.interactor.InitializeCitiesLists;
+import ru.innopolis.innoweather.domain.interactor.RemoveCity;
 import ru.innopolis.innoweather.domain.interactor.UseCase;
 import ru.innopolis.innoweather.domain.repository.CityRepository;
 import ru.innopolis.innoweather.domain.repository.WeatherRepository;
@@ -84,6 +85,16 @@ public class CityModule {
             CityRepository citiesRepository, ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread) {
         return new AddNewCity(citiesRepository, threadExecutor, postExecutionThread);
+    }
+
+
+    @Provides
+    @PerActivity
+    @Named("removeCity")
+    UseCase provideRemoveCityUseCase(
+            CityRepository citiesRepository, ThreadExecutor threadExecutor,
+            PostExecutionThread postExecutionThread) {
+        return new RemoveCity(citiesRepository, threadExecutor, postExecutionThread);
     }
 
 }

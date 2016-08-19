@@ -48,5 +48,12 @@ public class CityDataRepository implements CityRepository {
         return cityDataStore.initializeCities();
     }
 
+    @Override
+    public Observable<Boolean> removeCity(City city) {
+        CityDataStore cityDataStore = factory.createLocalDataStore();
+        CityEntity cityEntity = cityEntityDataMapper.transform(city);
+        return cityDataStore.removeCity(cityEntity);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package ru.innopolis.innoweather.presentation.presenter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -9,9 +10,12 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import ru.innopolis.innoweather.R;
+import ru.innopolis.innoweather.data.net.NetworkChecker;
 import ru.innopolis.innoweather.domain.City;
 import ru.innopolis.innoweather.domain.Weather;
 import ru.innopolis.innoweather.domain.interactor.GetWeatherDetails;
+import ru.innopolis.innoweather.domain.interactor.RemoveCity;
 import ru.innopolis.innoweather.domain.interactor.UseCase;
 import ru.innopolis.innoweather.presentation.di.PerActivity;
 import ru.innopolis.innoweather.presentation.mapper.CityModelDataMapper;
@@ -27,37 +31,47 @@ public class CitiesListPresenter implements Presenter {
     private CitiesListView citiesListView;
 
     private final UseCase getCitiesUseCase;
-    private final UseCase initializeCitiesList;
+    private final UseCase initializeCitiesListUseCase;
+    private final RemoveCity removeCityUseCase;
     private final GetWeatherDetails getWeatherDetails;
     private final CityModelDataMapper cityModelDataMapper;
     private final Settings settings;
+    private final Context context;
 
     private Collection<City> citiesCollection = new ArrayList<>();
     private Collection<Weather> weatherCollection = new ArrayList<>();
+
 
     @Inject
     public CitiesListPresenter(@Named("citiesList") UseCase getCitiesUseCase,
                                @Named("weatherDetails") UseCase getWeatherDetails,
                                @Named("initializeCitiesList") UseCase initializeCitiesList,
-                               CityModelDataMapper cityModelDataMapper, Settings settings) {
+                               @Named("removeCity") UseCase removeCityUseCase, CityModelDataMapper cityModelDataMapper, Settings settings,
+                               Context context) {
         this.getCitiesUseCase = getCitiesUseCase;
+        this.removeCityUseCase = (RemoveCity) removeCityUseCase;
         this.cityModelDataMapper = cityModelDataMapper;
-        this.initializeCitiesList = initializeCitiesList;
+        this.initializeCitiesListUseCase = initializeCitiesList;
         this.settings = settings;
         this.getWeatherDetails = (GetWeatherDetails) getWeatherDetails;
+        this.context = context;
     }
+
 
     public void setView(@NonNull CitiesListView view) {
         this.citiesListView = view;
     }
 
+
     @Override
     public void resume() {
     }
 
+
     @Override
     public void pause() {
     }
+
 
     @Override
     public void destroy() {
@@ -65,15 +79,16 @@ public class CitiesListPresenter implements Presenter {
         citiesListView = null;
     }
 
+
     /**
-     * Initializes the presenter by start retrieving cities list
+     * Initializes the presenter starting retrieving cities list
      */
     public void initialize() {
         if (isFirstStart()) {
-            initializeCitiesList.execute(new Subscriber() {
+            initializeCitiesListUseCase.execute(new Subscriber() {
                 @Override
                 public void onCompleted() {
-
+                    showCitiesCollectionInView(citiesCollection, weatherCollection);
                 }
 
                 @Override
@@ -90,20 +105,19 @@ public class CitiesListPresenter implements Presenter {
         loadCitiesList();
     }
 
+
     private boolean isFirstStart() {
         return settings.isFirstStart();
     }
 
+
     /**
      * Loads cities list.
      */
-    public void loadCitiesList() {
+    private void loadCitiesList() {
         showProgressView();
         citiesCollection.clear();
         getCitiesList();
-    }
-
-    private void clearCitiesList() {
     }
 
 
@@ -111,17 +125,16 @@ public class CitiesListPresenter implements Presenter {
         citiesListView.showProgress();
     }
 
+
     private void hideProgressView() {
         citiesListView.hideProgress();
     }
+
 
     public void onCityClicked(CityModel cityModel) {
         citiesListView.viewWeather(cityModel);
     }
 
-    private void showCitiesCollectionInView(Collection<City> cityCollection) {
-        showCitiesCollectionInView(cityCollection, null);
-    }
 
     private void showCitiesCollectionInView(Collection<City> cityCollection, Collection<Weather> weatherCollection) {
         final Collection<CityModel> cityModelCollection = cityModelDataMapper.transform(cityCollection, weatherCollection);
@@ -151,7 +164,7 @@ public class CitiesListPresenter implements Presenter {
                 getWeatherDetails.execute(new Subscriber<Weather>() {
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "onCompleted: all weathers here");
+                        showCitiesCollectionInView(citiesCollection, weatherCollection);
                     }
 
                     @Override
@@ -162,7 +175,6 @@ public class CitiesListPresenter implements Presenter {
                     @Override
                     public void onNext(Weather weather) {
                         weatherCollection.add(weather);
-                        showCitiesCollectionInView(citiesCollection, weatherCollection);
                         Log.d(TAG, "onNext: new weather came");
                     }
                 });
@@ -170,7 +182,35 @@ public class CitiesListPresenter implements Presenter {
         });
     }
 
-    public void addNewCity() {
+    public void update() {
+        if (NetworkChecker.isNetworkActive(context)) {
+            loadCitiesList();
+            citiesListView.showMessage(context.getString(R.string.msg_dowload_success));
+        } else {
+            citiesListView.showMessage(context.getString(R.string.msg_network_unavailable));
+        }
+    }
+
+
+    public void removeCity(CityModel model) {
+        City city = cityModelDataMapper.transform(model);
+        removeCityUseCase.setCity(city);
+        removeCityUseCase.execute(new Subscriber() {
+            @Override
+            public void onCompleted() {
+                loadCitiesList();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: problem with removing a city", e);
+            }
+
+            @Override
+            public void onNext(Object o) {
+
+            }
+        });
 
     }
 }

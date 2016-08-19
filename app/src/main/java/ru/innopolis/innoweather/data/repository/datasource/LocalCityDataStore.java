@@ -46,6 +46,12 @@ public class LocalCityDataStore implements CityDataStore {
         return Observable.just(true);
     }
 
+    @Override
+    public Observable<Boolean> removeCity(CityEntity cityEntity) {
+        boolean result = cityCache.remove(cityEntity);
+        return Observable.just(result);
+    }
+
     private List<CityEntity> getCityEntities(Reader reader) {
         Gson gson = new Gson();
         Type collectionType = new TypeToken<Collection<CityEntity>>() {

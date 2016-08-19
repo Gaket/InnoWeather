@@ -18,13 +18,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.innopolis.innoweather.R;
-import ru.innopolis.innoweather.presentation.di.components.UserComponent;
+import ru.innopolis.innoweather.presentation.di.components.CityComponent;
 import ru.innopolis.innoweather.presentation.model.WeatherModel;
 import ru.innopolis.innoweather.presentation.presenter.WeatherDetailsPresenter;
 import ru.innopolis.innoweather.presentation.view.WeatherDetailsView;
 
 public class WeatherDetailsFragment extends BaseFragment implements WeatherDetailsView {
-    private static final String INSTANCE_STATE__PARAM_WEATHER = "RU.INNO_WEATHER.STATE_PARAM_WEATHER";
 
     @Inject
     WeatherDetailsPresenter weatherDetailsPresenter;
@@ -45,15 +44,18 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     TextView tvWindDirection;
     private Unbinder unbinder;
 
+
     public WeatherDetailsFragment() {
         setRetainInstance(true);
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getComponent(UserComponent.class).inject(this);
+        getComponent(CityComponent.class).inject(this);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +64,7 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -72,6 +75,7 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
         }
     }
 
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -80,6 +84,7 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
         }
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -87,11 +92,13 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
         return true;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         weatherDetailsPresenter.resume();
     }
+
 
     @Override
     public void onPause() {
@@ -99,17 +106,20 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
         this.weatherDetailsPresenter.pause();
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         weatherDetailsPresenter.destroy();
     }
+
 
     @Override
     public void renderWeatherDetails(WeatherModel weather) {
@@ -119,9 +129,9 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
             tvCloudiness.setText(weather.getCloudiness());
             String humidity = String.format(Locale.US, "%d%%", weather.getHumidity().intValue());
             tvHumidity.setText(humidity);
-            String pressure = String.format(Locale.US, "%d mbar", weather.getPressure().intValue());
+            String pressure = String.format(Locale.US, "%d %s", weather.getPressure().intValue(), getActivity().getString(R.string.mbar));
             tvPressure.setText(pressure);
-            String windSpeed = String.format(Locale.US, "%d m/sec", weather.getWindSpeed().intValue());
+            String windSpeed = String.format(Locale.US, "%d %s", weather.getWindSpeed().intValue(), getActivity().getString(R.string.msec));
             tvWindSpeed.setText(windSpeed);
             String windDirection = String.format(Locale.US, "%s", weather.getWindDirection());
             tvWindDirection.setText(windDirection);
@@ -129,10 +139,17 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     }
 
     @Override
+    public void showMessage(String msg) {
+        showToastMessage(msg);
+    }
+
+
+    @Override
     public void showProgress() {
         this.rlProgress.setVisibility(View.VISIBLE);
         this.getActivity().setProgressBarIndeterminateVisibility(true);
     }
+
 
     @Override
     public void hideProgress() {
@@ -140,21 +157,25 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
         this.getActivity().setProgressBarIndeterminateVisibility(false);
     }
 
+
     @Override
     public void showError(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
+
 
     @Override
     public Context getContext() {
         return getActivity().getApplicationContext();
     }
 
+
     @Override
     public boolean update() {
-        weatherDetailsPresenter.initialize();
+        weatherDetailsPresenter.update();
         return true;
     }
+
 
     private void loadWeatherDetails() {
         if (weatherDetailsPresenter != null) {

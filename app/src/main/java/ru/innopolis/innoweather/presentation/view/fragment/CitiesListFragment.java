@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -31,29 +31,19 @@ import ru.innopolis.innoweather.presentation.view.adapter.CitiesAdapter;
  */
 public class CitiesListFragment extends BaseFragment implements CitiesListView {
 
-    /**
-     * Interface for listening user list events.
-     */
-    public interface CityListListener {
-        void onCityClicked(final CityModel cityModel);
-    }
-
     @Inject
     CitiesListPresenter citiesListPresenter;
     @Inject
     CitiesAdapter citiesAdapter;
-
     @BindView(R.id.rv_cities)
     RecyclerView rvUsers;
     @BindView(R.id.rl_progress)
     RelativeLayout rlProgress;
-
     private CitiesAdapter.OnItemClickListener onItemClickListener = cityModel -> {
         if (citiesListPresenter != null && cityModel != null) {
             citiesListPresenter.onCityClicked(cityModel);
         }
     };
-
     private CityListListener cityListListener;
 
 
@@ -64,7 +54,6 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     public CitiesListFragment() {
         setRetainInstance(true);
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -105,23 +94,39 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
             String editTextString = data.getStringExtra(
                     AddNewCityDialogFragment.EDIT_TEXT_BUNDLE_KEY);
             if (editTextString.equals("success")) {
-                citiesListPresenter.loadCitiesList();
+                citiesListPresenter.update();
             }
         }
     }
 
-    public void loadCitiesList() {
+    private void loadCitiesList() {
         citiesListPresenter.initialize();
     }
 
     private void setupRecyclerView() {
-        rvUsers.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rvUsers.setLayoutManager(llm);
         rvUsers.setHasFixedSize(true);
         rvUsers.setAdapter(citiesAdapter);
         rvUsers.setItemAnimator(new DefaultItemAnimator());
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int position = viewHolder.getAdapterPosition();
+                CityModel model = citiesAdapter.getItem(position);
+                citiesListPresenter.removeCity(model);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(rvUsers);
+
         citiesAdapter.setOnItemClickListener(onItemClickListener);
     }
 
@@ -140,7 +145,7 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     @Override
     public void renderCitiesList(Collection<CityModel> cityModels) {
         if (cityModels != null) {
-            citiesAdapter.setmCitiesCollection(cityModels);
+            citiesAdapter.setCitiesCollection(cityModels);
         }
     }
 
@@ -149,6 +154,11 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
         if (cityModel != null) {
             cityListListener.onCityClicked(cityModel);
         }
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        showToastMessage(msg);
     }
 
     @Override
@@ -171,18 +181,8 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
 
     @Override
     public boolean update() {
-        citiesListPresenter.initialize();
+        citiesListPresenter.update();
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_update:
-                citiesListPresenter.initialize();
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -192,4 +192,14 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
         addNewCityDialogFragment.setTargetFragment(this, AddNewCityDialogFragment.REQUEST_CODE);
         addNewCityDialogFragment.show(manager, "dialog");
     }
+
+
+    /**
+     * Interface for listening user list events.
+     */
+    public interface CityListListener {
+        void onCityClicked(final CityModel cityModel);
+    }
+
+
 }

@@ -1,8 +1,5 @@
 package ru.innopolis.innoweather.domain.repository;
 
-import java.util.List;
-
-import ru.innopolis.innoweather.data.entity.CityEntity;
 import ru.innopolis.innoweather.domain.City;
 import rx.Observable;
 
@@ -17,4 +14,5 @@ public interface CityRepository {
 
     Observable<Boolean> initializeCities();
 
+    Observable<Boolean> removeCity(City city);
 }

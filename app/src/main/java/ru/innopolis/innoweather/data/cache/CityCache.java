@@ -62,4 +62,12 @@ public interface CityCache {
    * Evict all elements of the cache.
    */
   void evictAll();
+
+  /**
+   * Remove given entity
+   *
+   * @param cityEntity to remove
+   */
+  boolean remove(CityEntity cityEntity);
+
 }

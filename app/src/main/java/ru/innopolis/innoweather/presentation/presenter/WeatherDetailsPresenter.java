@@ -1,11 +1,14 @@
 package ru.innopolis.innoweather.presentation.presenter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import ru.innopolis.innoweather.R;
+import ru.innopolis.innoweather.data.net.NetworkChecker;
 import ru.innopolis.innoweather.domain.Weather;
 import ru.innopolis.innoweather.domain.interactor.UseCase;
 import ru.innopolis.innoweather.presentation.di.PerActivity;
@@ -19,15 +22,16 @@ public class WeatherDetailsPresenter implements Presenter {
     private static String TAG = "WeatherDetailsPresenter";
 
     private WeatherDetailsView viewDetailsView;
-
     private final UseCase weatherDetailsUseCase;
     private final WeatherModelDataMapper weatherModelDataMapper;
+    private final Context context;
 
     @Inject
     public WeatherDetailsPresenter(@Named("weatherDetails") UseCase weatherDetailsUseCase,
-                                   WeatherModelDataMapper weatherModelDataMapper) {
+                                   WeatherModelDataMapper weatherModelDataMapper, Context context) {
         this.weatherDetailsUseCase = weatherDetailsUseCase;
         this.weatherModelDataMapper = weatherModelDataMapper;
+        this.context = context;
     }
 
     public void setView(@NonNull WeatherDetailsView view) {
@@ -74,6 +78,15 @@ public class WeatherDetailsPresenter implements Presenter {
     private void showWeatherDetailsInView(Weather weather) {
         final WeatherModel weatherModel = weatherModelDataMapper.transform(weather);
         this.viewDetailsView.renderWeatherDetails(weatherModel);
+    }
+
+    public void update() {
+        if (NetworkChecker.isNetworkActive(context)) {
+            loadWeatherDetails();
+            viewDetailsView.showMessage(context.getString(R.string.msg_dowload_success));
+        } else {
+            viewDetailsView.showMessage(context.getString(R.string.msg_network_unavailable));
+        }
     }
 
     /**

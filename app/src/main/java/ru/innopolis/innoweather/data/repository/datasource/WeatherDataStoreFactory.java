@@ -18,25 +18,17 @@ public class WeatherDataStoreFactory {
     private static final String TAG = "WeatherDataStoreFactory";
 
     private final Context context;
-    private final JsonSerializer serializer;
-    private final FileManager fileManager;
-    private final ThreadExecutor threadExecutor;
-    private final NetworkChecker networkChecker;
     private final WeatherCache weatherCache;
 
     @Inject
-    public WeatherDataStoreFactory(Context context, JsonSerializer serializer, FileManager fileManager, ThreadExecutor threadExecutor, NetworkChecker networkChecker) {
+    public WeatherDataStoreFactory(Context context, JsonSerializer serializer, FileManager fileManager, ThreadExecutor threadExecutor) {
         this.context = context;
-        this.serializer = serializer;
-        this.fileManager = fileManager;
-        this.threadExecutor = threadExecutor;
-        this.networkChecker = networkChecker;
         this.weatherCache = new WeatherCacheImpl(context, serializer, fileManager, threadExecutor);
     }
 
     public WeatherDataStore create() {
         WeatherDataStore weatherDataStore;
-        weatherDataStore = networkChecker.isNetworkActive() ? createCloudDataStore() : createLocalDataStore();
+        weatherDataStore = NetworkChecker.isNetworkActive(context) ? createCloudDataStore() : createLocalDataStore();
         return weatherDataStore;
     }
 

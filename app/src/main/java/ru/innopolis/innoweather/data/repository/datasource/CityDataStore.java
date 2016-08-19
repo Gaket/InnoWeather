@@ -12,4 +12,6 @@ public interface CityDataStore {
     Observable<Boolean> addCity(CityEntity city);
 
     Observable<Boolean> initializeCities();
+
+    Observable<Boolean> removeCity(CityEntity cityEntity);
 }

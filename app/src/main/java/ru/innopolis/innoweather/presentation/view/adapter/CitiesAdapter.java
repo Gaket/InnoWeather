@@ -73,6 +73,15 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         notifyDataSetChanged();
     }
 
+    public CityModel getItem(int position) {
+        if (citiesCollection instanceof List) {
+            return ((List<CityModel>) citiesCollection).get(position);
+        } else {
+            throw new UnsupportedOperationException("Not implemented");
+        }
+    }
+
+
     private void validateCitiesCollection(Collection<CityModel> citiesList) {
         if (citiesList == null) {
             throw new IllegalArgumentException("The list cannot be null");

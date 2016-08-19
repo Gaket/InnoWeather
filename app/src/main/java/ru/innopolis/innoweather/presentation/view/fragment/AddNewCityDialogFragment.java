@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -22,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.innopolis.innoweather.R;
 import ru.innopolis.innoweather.presentation.di.HasComponent;
-import ru.innopolis.innoweather.presentation.di.components.UserComponent;
+import ru.innopolis.innoweather.presentation.di.components.CityComponent;
 import ru.innopolis.innoweather.presentation.model.CitiesTableModel;
 import ru.innopolis.innoweather.presentation.model.CityModel;
 import ru.innopolis.innoweather.presentation.presenter.AddNewCityPresenter;
@@ -32,7 +33,6 @@ public class AddNewCityDialogFragment extends DialogFragment implements AddNewCi
     private static final String TAG = "CityPickerDialog";
     public static final String EDIT_TEXT_BUNDLE_KEY = "add_new_city";
     public static final int REQUEST_CODE = 142638;
-
 
     private CityModel selectedCity;
 
@@ -46,8 +46,9 @@ public class AddNewCityDialogFragment extends DialogFragment implements AddNewCi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getComponent(UserComponent.class).inject(this);
+        getComponent(CityComponent.class).inject(this);
     }
+
 
     @NonNull
     @Override
@@ -86,24 +87,26 @@ public class AddNewCityDialogFragment extends DialogFragment implements AddNewCi
         return 0;
     }
 
+
     @Override
     public void showProgress() {
-
+        // Empty
     }
+
 
     @Override
     public void hideProgress() {
-
+        // Empty
     }
+
 
     @Override
     public void showError(String message) {
-
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         // adapter should be filterable, therefore here is a concrete class
@@ -122,6 +125,7 @@ public class AddNewCityDialogFragment extends DialogFragment implements AddNewCi
 
         return rootView;
     }
+
 
     /**
      * Gets a component for dependency injection by its type.
