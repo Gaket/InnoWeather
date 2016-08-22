@@ -5,13 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 
 import javax.inject.Inject;
 
+import icepick.Icepick;
 import ru.innopolis.innoweather.R;
 import ru.innopolis.innoweather.presentation.AndroidApplication;
 import ru.innopolis.innoweather.presentation.di.components.ApplicationComponent;
@@ -29,6 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getApplicationComponent().inject(this);
+        Icepick.restoreInstanceState(this, savedInstanceState);
     }
 
 
@@ -64,6 +62,12 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected ActivityModule getActivityModule() {
         return new ActivityModule(this);
+    }
+
+
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 
 

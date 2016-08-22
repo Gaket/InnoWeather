@@ -1,21 +1,35 @@
 package ru.innopolis.innoweather.presentation.view.fragment;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.squareup.leakcanary.RefWatcher;
+
+import icepick.Icepick;
 import ru.innopolis.innoweather.R;
+import ru.innopolis.innoweather.presentation.AndroidApplication;
 import ru.innopolis.innoweather.presentation.di.HasComponent;
 
 public abstract class BaseFragment extends Fragment {
 
-    /**
-     * Shows a {@link android.widget.Toast} message.
-     *
-     * @param message An string representing a message to be shown.
-     */
-    protected void showToastMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+    }
+
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AndroidApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     /**
@@ -35,6 +49,15 @@ public abstract class BaseFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * Shows a {@link android.widget.Toast} message.
+     *
+     * @param message An string representing a message to be shown.
+     */
+    protected void showToastMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     /**

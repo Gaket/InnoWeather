@@ -16,10 +16,16 @@
 package ru.innopolis.innoweather.presentation;
 
 import android.app.Application;
+import android.content.Context;
 
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
+
+import ru.innopolis.innoweather.BuildConfig;
 import ru.innopolis.innoweather.presentation.di.components.ApplicationComponent;
 import ru.innopolis.innoweather.presentation.di.components.DaggerApplicationComponent;
 import ru.innopolis.innoweather.presentation.di.modules.ApplicationModule;
+import timber.log.Timber;
 
 
 /**
@@ -28,11 +34,17 @@ import ru.innopolis.innoweather.presentation.di.modules.ApplicationModule;
 public class AndroidApplication extends Application {
 
     private ApplicationComponent applicationComponent;
+    private RefWatcher refWatcher;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-        this.initializeInjector();
+        initializeInjector();
+        refWatcher = LeakCanary.install(this);
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 
     private void initializeInjector() {
@@ -43,5 +55,16 @@ public class AndroidApplication extends Application {
 
     public ApplicationComponent getApplicationComponent() {
         return this.applicationComponent;
+    }
+
+    /**
+     * Get watcher to be able to look for leaks
+     *
+     * @param context to get application
+     * @return watcher
+     */
+    public static RefWatcher getRefWatcher(Context context) {
+        AndroidApplication application = (AndroidApplication) context.getApplicationContext();
+        return application.refWatcher;
     }
 }
