@@ -39,7 +39,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
 
     @Override
     public CityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = layoutInflater.inflate(R.layout.card_layout, parent, false);
+        final View view = layoutInflater.inflate(R.layout.item_city_layout, parent, false);
         return new CityViewHolder(view);
     }
 
@@ -99,4 +99,6 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
             ButterKnife.bind(this, itemView);
         }
     }
+
+
 }

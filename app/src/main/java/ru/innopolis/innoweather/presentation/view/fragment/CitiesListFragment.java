@@ -26,6 +26,7 @@ import ru.innopolis.innoweather.presentation.model.CityModel;
 import ru.innopolis.innoweather.presentation.presenter.CitiesListPresenter;
 import ru.innopolis.innoweather.presentation.view.CitiesListView;
 import ru.innopolis.innoweather.presentation.view.adapter.CitiesAdapter;
+import ru.innopolis.innoweather.presentation.view.adapter.CityDivider;
 
 /**
  * A fragment representing a list of cities.
@@ -116,6 +117,7 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
         rvUsers.setHasFixedSize(true);
         rvUsers.setAdapter(citiesAdapter);
         rvUsers.setItemAnimator(new DefaultItemAnimator());
+        rvUsers.addItemDecoration(new CityDivider(R.dimen.activity_vertical_margin));
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override

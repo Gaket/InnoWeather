@@ -79,7 +79,7 @@ public class WeatherDetailsActivity extends BaseActivity implements HasComponent
 
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (outState != null) {
             outState.putInt(INSTANCE_STATE_PARAM_CITY_ID, cityId);
