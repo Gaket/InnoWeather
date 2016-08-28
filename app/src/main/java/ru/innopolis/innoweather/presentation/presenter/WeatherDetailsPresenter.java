@@ -83,10 +83,10 @@ public class WeatherDetailsPresenter implements Presenter {
     public void update() {
         if (NetworkChecker.isNetworkActive(context)) {
             loadWeatherDetails();
-            viewDetailsView.showMessage(context.getString(R.string.msg_dowload_success));
         } else {
             viewDetailsView.showMessage(context.getString(R.string.msg_network_unavailable));
         }
+        viewDetailsView.hideProgress();
     }
 
     /**

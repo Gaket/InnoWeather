@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +13,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import java.util.Collection;
 
@@ -26,12 +26,12 @@ import ru.innopolis.innoweather.presentation.model.CityModel;
 import ru.innopolis.innoweather.presentation.presenter.CitiesListPresenter;
 import ru.innopolis.innoweather.presentation.view.CitiesListView;
 import ru.innopolis.innoweather.presentation.view.adapter.CitiesAdapter;
-import ru.innopolis.innoweather.presentation.view.adapter.CityDivider;
+import ru.innopolis.innoweather.presentation.view.adapter.DividerItemDecoration;
 
 /**
  * A fragment representing a list of cities.
  */
-public class CitiesListFragment extends BaseFragment implements CitiesListView {
+public class CitiesListFragment extends BaseFragment implements CitiesListView, SwipeRefreshLayout.OnRefreshListener{
 
     @Inject
     CitiesListPresenter citiesListPresenter;
@@ -39,8 +39,9 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
     CitiesAdapter citiesAdapter;
     @BindView(R.id.rv_cities)
     RecyclerView rvUsers;
-    @BindView(R.id.rl_progress)
-    RelativeLayout rlProgress;
+    @BindView(R.id.swipe_refresh_cities)
+    SwipeRefreshLayout swipeRefreshCities;
+
     private CitiesAdapter.OnItemClickListener onItemClickListener = cityModel -> {
         if (citiesListPresenter != null && cityModel != null) {
             citiesListPresenter.onCityClicked(cityModel);
@@ -77,6 +78,7 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
         View view = inflater.inflate(R.layout.fragment_city_list, container, false);
         ButterKnife.bind(this, view);
         setupRecyclerView();
+        setupSwipeRefreshLayout();
         return view;
     }
 
@@ -99,43 +101,6 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
                 citiesListPresenter.update();
             }
         }
-    }
-
-    private void loadCitiesList() {
-        citiesListPresenter.initialize();
-    }
-
-    private void setupRecyclerView() {
-        LinearLayoutManager llm;
-        if (getActivity().getResources().getBoolean(R.bool.landscape_mode)) {
-            llm = new GridLayoutManager(getContext(), 2);
-        } else {
-            llm = new LinearLayoutManager(getContext());
-        }
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rvUsers.setLayoutManager(llm);
-        rvUsers.setHasFixedSize(true);
-        rvUsers.setAdapter(citiesAdapter);
-        rvUsers.setItemAnimator(new DefaultItemAnimator());
-        rvUsers.addItemDecoration(new CityDivider(R.dimen.activity_vertical_margin));
-
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                int position = viewHolder.getAdapterPosition();
-                CityModel model = citiesAdapter.getItem(position);
-                citiesListPresenter.removeCity(model);
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(rvUsers);
-
-        citiesAdapter.setOnItemClickListener(onItemClickListener);
     }
 
     @Override
@@ -171,26 +136,17 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
 
     @Override
     public void showProgress() {
-        rlProgress.setVisibility(View.VISIBLE);
-        getActivity().setProgressBarIndeterminateVisibility(true);
+        swipeRefreshCities.setRefreshing(true);
     }
 
     @Override
     public void hideProgress() {
-        rlProgress.setVisibility(View.GONE);
-        getActivity().setProgressBarIndeterminateVisibility(false);
-
+        swipeRefreshCities.setRefreshing(false);
     }
 
     @Override
     public void showError(String message) {
         showToastMessage(message);
-    }
-
-    @Override
-    public boolean update() {
-        citiesListPresenter.update();
-        return true;
     }
 
     @Override
@@ -201,10 +157,58 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView {
         addNewCityDialogFragment.show(manager, "dialog");
     }
 
-
     /**
      * Interface for listening user list events.
      */
+    @Override
+    public void onRefresh() {
+        citiesListPresenter.update();
+    }
+
+    private void loadCitiesList() {
+        citiesListPresenter.initialize();
+    }
+
+    private void setupRecyclerView() {
+        LinearLayoutManager llm;
+        if (getActivity().getResources().getBoolean(R.bool.landscape_mode)) {
+            llm = new GridLayoutManager(getContext(), 2);
+        } else {
+            llm = new LinearLayoutManager(getContext());
+        }
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        rvUsers.setLayoutManager(llm);
+        rvUsers.setHasFixedSize(true);
+        rvUsers.setAdapter(citiesAdapter);
+        rvUsers.setItemAnimator(new DefaultItemAnimator());
+        rvUsers.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+//        rvUsers.addItemDecoration(new CityDivider(R.dimen.activity_vertical_margin));
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int position = viewHolder.getAdapterPosition();
+                CityModel model = citiesAdapter.getItem(position);
+                citiesListPresenter.removeCity(model);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(rvUsers);
+
+        citiesAdapter.setOnItemClickListener(onItemClickListener);
+    }
+
+    private void setupSwipeRefreshLayout() {
+        swipeRefreshCities.setOnRefreshListener(this);
+        swipeRefreshCities.setColorSchemeResources(R.color.primary, R.color.primary_light);
+    }
+
+
     public interface CityListListener {
         void onCityClicked(final CityModel cityModel);
     }

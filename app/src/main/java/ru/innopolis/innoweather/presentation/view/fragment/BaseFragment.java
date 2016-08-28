@@ -2,13 +2,11 @@ package ru.innopolis.innoweather.presentation.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.squareup.leakcanary.RefWatcher;
 
 import icepick.Icepick;
-import ru.innopolis.innoweather.R;
 import ru.innopolis.innoweather.presentation.AndroidApplication;
 import ru.innopolis.innoweather.presentation.di.HasComponent;
 
@@ -40,16 +38,6 @@ public abstract class BaseFragment extends Fragment {
         return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_update:
-                update();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     /**
      * Shows a {@link android.widget.Toast} message.
@@ -60,10 +48,4 @@ public abstract class BaseFragment extends Fragment {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * Updates data in current fragment
-     *
-     * @return true in case of successful update
-     */
-    public abstract boolean update();
 }

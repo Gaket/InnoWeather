@@ -2,11 +2,11 @@ package ru.innopolis.innoweather.presentation.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +23,7 @@ import ru.innopolis.innoweather.presentation.model.WeatherModel;
 import ru.innopolis.innoweather.presentation.presenter.WeatherDetailsPresenter;
 import ru.innopolis.innoweather.presentation.view.WeatherDetailsView;
 
-public class WeatherDetailsFragment extends BaseFragment implements WeatherDetailsView {
+public class WeatherDetailsFragment extends BaseFragment implements WeatherDetailsView, SwipeRefreshLayout.OnRefreshListener {
 
     @Inject
     WeatherDetailsPresenter weatherDetailsPresenter;
@@ -32,8 +32,6 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     TextView tvTemp;
     @BindView(R.id.tv_cloudiness)
     TextView tvCloudiness;
-    @BindView(R.id.rl_progress)
-    RelativeLayout rlProgress;
     @BindView(R.id.tv_humidity)
     TextView tvHumidity;
     @BindView(R.id.tv_pressure)
@@ -42,6 +40,8 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
     TextView tvWindSpeed;
     @BindView(R.id.tv_wind_direction)
     TextView tvWindDirection;
+    @BindView(R.id.swipe_refresh_weather_details)
+    SwipeRefreshLayout swipeRefreshWeatherDetails;
     private Unbinder unbinder;
 
 
@@ -63,6 +63,7 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
         View view;
         view = inflater.inflate(R.layout.fragment_weather_details, container, false);
         unbinder = ButterKnife.bind(this, view);
+        swipeRefreshWeatherDetails();
         return view;
     }
 
@@ -147,23 +148,18 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
 
     @Override
     public void showProgress() {
-        this.rlProgress.setVisibility(View.VISIBLE);
-        this.getActivity().setProgressBarIndeterminateVisibility(true);
+        swipeRefreshWeatherDetails.setRefreshing(true);
     }
-
 
     @Override
     public void hideProgress() {
-        this.rlProgress.setVisibility(View.GONE);
-        this.getActivity().setProgressBarIndeterminateVisibility(false);
+        swipeRefreshWeatherDetails.setRefreshing(false);
     }
-
 
     @Override
     public void showError(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
-
 
     @Override
     public Context getContext() {
@@ -172,11 +168,14 @@ public class WeatherDetailsFragment extends BaseFragment implements WeatherDetai
 
 
     @Override
-    public boolean update() {
+    public void onRefresh() {
         weatherDetailsPresenter.update();
-        return true;
     }
 
+    private void swipeRefreshWeatherDetails() {
+        swipeRefreshWeatherDetails.setOnRefreshListener(this);
+        swipeRefreshWeatherDetails.setColorSchemeResources(R.color.primary, R.color.primary_light);
+    }
 
     private void loadWeatherDetails() {
         if (weatherDetailsPresenter != null) {

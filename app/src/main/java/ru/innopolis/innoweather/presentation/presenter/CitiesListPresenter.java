@@ -185,10 +185,10 @@ public class CitiesListPresenter implements Presenter {
     public void update() {
         if (NetworkChecker.isNetworkActive(context)) {
             loadCitiesList();
-            citiesListView.showMessage(context.getString(R.string.msg_dowload_success));
         } else {
             citiesListView.showMessage(context.getString(R.string.msg_network_unavailable));
         }
+        citiesListView.hideProgress();
     }
 
 
