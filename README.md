@@ -36,7 +36,7 @@
 - Адаптация разметки под ландшафтный режим и, частично, под планшеты
 - Удаление городов паттерном "Swipe to dismiss"
 - Показ progress bar во время загрузки данных о погоде
-- Обновление данных по паттерну Swipe to refresh
+- Обновление данных по паттерну "Swipe to refresh"
 
 ### Acknowledgements
 Icons designed by Freepic from FlatIcon, license Creative Commons BY 3.0.
