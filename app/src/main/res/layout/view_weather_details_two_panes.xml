@@ -15,13 +15,8 @@
 
         <TextView
             style="@style/AppTheme.TextViewTitle"
-            android:text="@string/view_text_today" />
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/text_margin"
-            android:background="@color/divider" />
+            android:text="@string/view_text_today"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
 
 
         <LinearLayout
