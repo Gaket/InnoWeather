@@ -27,7 +27,9 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         RefWatcher refWatcher = AndroidApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+        if (refWatcher != null) {
+            refWatcher.watch(this);
+        }
     }
 
     /**

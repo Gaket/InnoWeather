@@ -1,5 +1,6 @@
 package ru.innopolis.innoweather.data.net;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
 
 import okhttp3.HttpUrl;
@@ -9,6 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.innopolis.innoweather.BuildConfig;
 
 public class ServiceGenerator {
     private static final String TAG = "ServiceGenerator";
@@ -38,6 +40,9 @@ public class ServiceGenerator {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.NONE);
         httpClient.addInterceptor(logging);
+        if (BuildConfig.DEBUG) {
+            httpClient.addNetworkInterceptor(new StethoInterceptor());
+        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)

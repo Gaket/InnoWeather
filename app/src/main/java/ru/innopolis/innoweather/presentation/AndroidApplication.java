@@ -17,7 +17,9 @@ package ru.innopolis.innoweather.presentation;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.annotation.Nullable;
 
+import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -41,9 +43,12 @@ public class AndroidApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initializeInjector();
-        refWatcher = LeakCanary.install(this);
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            Stetho.initializeWithDefaults(this);
+        }
+        if (BuildConfig.LEAKS) {
+            refWatcher = LeakCanary.install(this);
         }
     }
 
@@ -63,6 +68,7 @@ public class AndroidApplication extends Application {
      * @param context to get application
      * @return watcher
      */
+    @Nullable
     public static RefWatcher getRefWatcher(Context context) {
         AndroidApplication application = (AndroidApplication) context.getApplicationContext();
         return application.refWatcher;

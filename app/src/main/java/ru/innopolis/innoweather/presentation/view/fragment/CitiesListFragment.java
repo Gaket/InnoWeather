@@ -182,7 +182,6 @@ public class CitiesListFragment extends BaseFragment implements CitiesListView, 
         rvUsers.setAdapter(citiesAdapter);
         rvUsers.setItemAnimator(new DefaultItemAnimator());
         rvUsers.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-//        rvUsers.addItemDecoration(new CityDivider(R.dimen.activity_vertical_margin));
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
