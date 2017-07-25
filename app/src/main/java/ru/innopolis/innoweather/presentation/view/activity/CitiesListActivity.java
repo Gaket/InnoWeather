@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 
+import com.bugsnag.android.Bugsnag;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -37,6 +39,9 @@ public class CitiesListActivity extends BaseActivity implements HasComponent<Cit
         setContentView(R.layout.activity_cities);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+
+        Bugsnag.init(this);
+        Bugsnag.notify(new RuntimeException("Test error"));
 
         if (savedInstanceState == null) {
             Fragment cities = new CitiesListFragment();

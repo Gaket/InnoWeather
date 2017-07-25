@@ -29,6 +29,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".presentation.view.activity.CitiesListActivity" />
         </activity>
+
     </application>
 
 </manifest>
